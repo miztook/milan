@@ -64,7 +64,7 @@ namespace IDEHandler = VC6IdeHandler;
 
 #pragma warning( disable : 4278 )
 #pragma warning( disable : 4146 )
-#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
+#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("12.0") lcid("0") raw_interfaces_only named_guids
 #pragma warning( default : 4146 )
 #pragma warning( default : 4278 )
 
