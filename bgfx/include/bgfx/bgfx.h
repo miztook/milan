@@ -422,6 +422,8 @@ namespace bgfx
 		/// It's not safe to continue (Exluding _code `Fatal::DebugCheck`),
 		/// inform the user and terminate the application.
 		///
+		/// @param[in] _filePath File path where fatal message was generated.
+		/// @param[in] _line Line where fatal message was generated.
 		/// @param[in] _code Fatal error code.
 		/// @param[in] _str More information about error.
 		///
@@ -430,7 +432,12 @@ namespace bgfx
 		///
 		/// @attention C99 equivalent is `bgfx_callback_vtbl.fatal`.
 		///
-		virtual void fatal(Fatal::Enum _code, const char* _str) = 0;
+		virtual void fatal(
+			  const char* _filePath
+			, uint16_t _line
+			, Fatal::Enum _code
+			, const char* _str
+			) = 0;
 
 		/// Print debug message.
 		///
@@ -556,6 +563,13 @@ namespace bgfx
 
 		/// Called when a video capture begins.
 		///
+		/// @param[in] _width Image width.
+		/// @param[in] _height Image height.
+		/// @param[in] _pitch Number of bytes to skip between the start of
+		///   each horizontal line of the image.
+		/// @param[in] _format Texture format. See: `TextureFormat::Enum`.
+		/// @param[in] _yflip If true, image origin is bottom left.
+		///
 		/// @attention C99 equivalent is `bgfx_callback_vtbl.capture_begin`.
 		///
 		virtual void captureBegin(
@@ -586,6 +600,21 @@ namespace bgfx
 	{
 	}
 
+	/// Platform data.
+	///
+	/// @attention C99 equivalent is `bgfx_platform_data_t`.
+	///
+	struct PlatformData
+	{
+		PlatformData();
+
+		void* ndt;          //!< Native display type.
+		void* nwh;          //!< Native window handle.
+		void* context;      //!< GL context, or D3D device.
+		void* backBuffer;   //!< GL backbuffer, or D3D render target view.
+		void* backBufferDS; //!< Backbuffer depth/stencil.
+	};
+
 	/// Backbuffer resolution and reset parameters.
 	///
 	/// @attention C99 equivalent is `bgfx_resolution_t`.
@@ -594,9 +623,12 @@ namespace bgfx
 	{
 		Resolution();
 
-		uint32_t width;  //!< Backbuffer width.
-		uint32_t height; //!< Backbuffer height.
-		uint32_t reset;	 //!< Reset parameters.
+		TextureFormat::Enum format; //!< Backbuffer format.
+		uint32_t width;             //!< Backbuffer width.
+		uint32_t height;            //!< Backbuffer height.
+		uint32_t reset;	            //!< Reset parameters.
+		uint8_t  numBackBuffers;    //!< Number of back buffers.
+		uint8_t  maxFrameLatency;   //!< Maximum frame latency.
 	};
 
 	/// Initialization parameters used by `bgfx::init`.
@@ -628,7 +660,11 @@ namespace bgfx
 		bool debug;   //!< Enable device for debuging.
 		bool profile; //!< Enable device for profiling.
 
-		Resolution resolution; //!< Backbuffer resolution and reset parameters.
+		/// Platform data.
+		PlatformData platformData;
+
+		/// Backbuffer resolution and reset parameters. See: `bgfx::Resolution`.
+		Resolution resolution;
 
 		struct Limits
 		{
@@ -658,7 +694,9 @@ namespace bgfx
 	///
 	typedef void (*ReleaseFn)(void* _ptr, void* _userData);
 
-	/// Memory obtained by calling `bgfx::alloc`, `bgfx::copy`, or `bgfx::makeRef`.
+	/// Memory must be obtained by calling `bgfx::alloc`, `bgfx::copy`, or `bgfx::makeRef`.
+	///
+	/// @attention It is illegal to create this structure on stack and pass it to any bgfx API.
 	///
 	/// @attention C99 equivalent is `bgfx_memory_t`.
 	///
@@ -714,6 +752,7 @@ namespace bgfx
 			uint32_t maxShaders;              //!< Maximum number of shader handles.
 			uint32_t maxTextures;             //!< Maximum number of texture handles.
 			uint32_t maxTextureSamplers;      //!< Maximum number of texture samplers.
+			uint32_t maxComputeBindings;      //!< Maximum number of compute bindings.
 			uint32_t maxVertexDecls;          //!< Maximum number of vertex format declarations.
 			uint32_t maxVertexStreams;        //!< Maximum number of vertex streams.
 			uint32_t maxIndexBuffers;         //!< Maximum number of index buffer handles.
@@ -830,6 +869,7 @@ namespace bgfx
 		TextureHandle handle; //!< Texture handle.
 		uint16_t mip;         //!< Mip level.
 		uint16_t layer;       //!< Cubemap side or depth layer/slice.
+		uint8_t  resolve;     //!< Resolve flags. See: `BGFX_RESOLVE_*`
 	};
 
 	/// Transform data.
@@ -840,34 +880,6 @@ namespace bgfx
 	{
 		float* data;  //!< Pointer to first 4x4 matrix.
 		uint16_t num; //!< Number of matrices.
-	};
-
-	/// HMD info.
-	///
-	/// @attention C99 equivalent is `bgfx_hmd_t`.
-	///
-	struct HMD
-	{
-		/// Eye
-		///
-		/// @attention C99 equivalent is `bgfx_hmd_eye_t`.
-		///
-		struct Eye
-		{
-			float rotation[4];          //!< Eye rotation represented as quaternion.
-			float translation[3];       //!< Eye translation.
-			float fov[4];               //!< Field of view (up, down, left, right).
-			float viewOffset[3];        //!< Eye view matrix translation adjustment.
-			float projection[16];       //!< Eye projection matrix.
-			float pixelsPerTanAngle[2]; //!< Number of pixels that fit in tan(angle) = 1.
-		};
-
-		Eye eye[2];
-		uint16_t width;        //!< Frame buffer width.
-		uint16_t height;       //!< Frame buffer height.
-		uint32_t deviceWidth;  //!< Device resolution width.
-		uint32_t deviceHeight; //!< Device resolution height.
-		uint8_t  flags;        //!< Status flags.
 	};
 
 	///
@@ -918,6 +930,7 @@ namespace bgfx
 
 		uint32_t numDraw;                   //!< Number of draw calls submitted.
 		uint32_t numCompute;                //!< Number of compute calls submitted.
+		uint32_t numBlit;                   //!< Number of blit calls submitted.
 		uint32_t maxGpuLatency;             //!< GPU driver latency.
 
 		uint16_t numDynamicIndexBuffers;    //!< Number of used dynamic index buffers.
@@ -1320,6 +1333,16 @@ namespace bgfx
 			, uint32_t _num
 			);
 
+		/// Set number of instances for auto generated instances use in conjuction
+		/// with gl_InstanceID.
+		///
+		/// @param[in] _numInstances Number of instances.
+		///
+		/// @attention Availability depends on: `BGFX_CAPS_VERTEX_ID`.
+		/// @attention C99 equivalent is `bgfx_set_instance_count`.
+		///
+		void setInstanceCount(uint32_t _numInstances);
+
 		/// Set texture stage for draw primitive.
 		///
 		/// @param[in] _stage Texture unit.
@@ -1327,9 +1350,9 @@ namespace bgfx
 		/// @param[in] _handle Texture handle.
 		/// @param[in] _flags Texture sampling mode. Default value UINT32_MAX uses
 		///   texture sampling settings from the texture.
-		///   - `BGFX_TEXTURE_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
+		///   - `BGFX_SAMPLER_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
 		///     mode.
-		///   - `BGFX_TEXTURE_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
+		///   - `BGFX_SAMPLER_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
 		///     sampling.
 		///
 		/// @attention C99 equivalent is `bgfx_set_texture`.
@@ -1363,7 +1386,7 @@ namespace bgfx
 		void submit(
 			  ViewId _id
 			, ProgramHandle _program
-			, int32_t _depth = 0
+			, uint32_t _depth = 0
 			, bool _preserveState = false
 			);
 
@@ -1382,7 +1405,7 @@ namespace bgfx
 			  ViewId _id
 			, ProgramHandle _program
 			, OcclusionQueryHandle _occlusionQuery
-			, int32_t _depth = 0
+			, uint32_t _depth = 0
 			, bool _preserveState = false
 			);
 
@@ -1406,7 +1429,7 @@ namespace bgfx
 			, IndirectBufferHandle _indirectHandle
 			, uint16_t _start = 0
 			, uint16_t _num = 1
-			, int32_t _depth = 0
+			, uint32_t _depth = 0
 			, bool _preserveState = false
 			);
 
@@ -1887,14 +1910,12 @@ namespace bgfx
 	///   - `BGFX_RESET_VSYNC` - Enable V-Sync.
 	///   - `BGFX_RESET_MAXANISOTROPY` - Turn on/off max anisotropy.
 	///   - `BGFX_RESET_CAPTURE` - Begin screen capture.
-	///   - `BGFX_RESET_HMD` - HMD stereo rendering.
-	///   - `BGFX_RESET_HMD_DEBUG` - HMD stereo rendering debug mode.
-	///   - `BGFX_RESET_HMD_RECENTER` - HMD calibration.
 	///   - `BGFX_RESET_FLUSH_AFTER_RENDER` - Flush rendering after submitting to GPU.
 	///   - `BGFX_RESET_FLIP_AFTER_RENDER` - This flag  specifies where flip
 	///     occurs. Default behavior is that flip occurs before rendering new
 	///     frame. This flag only has effect when `BGFX_CONFIG_MULTITHREADED=0`.
 	///   - `BGFX_RESET_SRGB_BACKBUFFER` - Enable sRGB backbuffer.
+	/// @param[in] _format Texture format. See: `TextureFormat::Enum`.
 	///
 	/// @attention This call doesn't actually change window size, it just
 	///   resizes back-buffer. Windowing code has to change window size.
@@ -1905,11 +1926,14 @@ namespace bgfx
 		  uint32_t _width
 		, uint32_t _height
 		, uint32_t _flags = BGFX_RESET_NONE
+		, TextureFormat::Enum _format = TextureFormat::Count
 		);
 
 	/// Begin submitting draw calls from thread.
 	///
-	Encoder* begin();
+	/// @param[in] _forThread Explicitly request an encoder for a worker thread.
+	///
+	Encoder* begin(bool _forThread = false);
 
 	/// End submitting draw calls from thread.
 	///
@@ -1948,12 +1972,6 @@ namespace bgfx
 	/// @attention C99 equivalent is `bgfx_get_caps`.
 	///
 	const Caps* getCaps();
-
-	/// Returns HMD info.
-	///
-	/// @attention C99 equivalent is `bgfx_get_hmd`.
-	///
-	const HMD* getHMD();
 
 	/// Returns performance counters.
 	///
@@ -2512,12 +2530,12 @@ namespace bgfx
 		, bool _cubeMap
 		, uint16_t _numLayers
 		, TextureFormat::Enum _format
-		, uint32_t _flags
+		, uint64_t _flags
 		);
 
 	/// Calculate amount of memory required for texture.
 	///
-	/// @param[out] _info Resulting texture info structure.
+	/// @param[out] _info Resulting texture info structure. See: `TextureInfo`.
 	/// @param[in] _width Width.
 	/// @param[in] _height Height.
 	/// @param[in] _depth Depth dimension of volume texture.
@@ -2542,11 +2560,11 @@ namespace bgfx
 	/// Create texture from memory buffer.
 	///
 	/// @param[in] _mem DDS, KTX or PVR texture data.
-	/// @param[in] _flags Default texture sampling mode is linear, and wrap mode
-	///   is repeat.
-	///   - `BGFX_TEXTURE_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
+	/// @param[in] _flags Texture creation (see `BGFX_TEXTURE_*`.), and sampler (see `BGFX_SAMPLER_*`)
+	///   flags. Default texture sampling mode is linear, and wrap mode is repeat.
+	///   - `BGFX_SAMPLER_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
 	///     mode.
-	///   - `BGFX_TEXTURE_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
+	///   - `BGFX_SAMPLER_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
 	///     sampling.
 	///
 	/// @param[in] _skip Skip top level mips when parsing texture.
@@ -2557,7 +2575,7 @@ namespace bgfx
 	///
 	TextureHandle createTexture(
 		  const Memory* _mem
-		, uint32_t _flags = BGFX_TEXTURE_NONE
+		, uint64_t _flags = BGFX_TEXTURE_NONE|BGFX_SAMPLER_NONE
 		, uint8_t _skip = 0
 		, TextureInfo* _info = NULL
 		);
@@ -2570,11 +2588,11 @@ namespace bgfx
 	/// @param[in] _numLayers Number of layers in texture array. Must be 1 if caps
 	///   `BGFX_CAPS_TEXTURE_2D_ARRAY` flag is not set.
 	/// @param[in] _format Texture format. See: `TextureFormat::Enum`.
-	/// @param[in] _flags Default texture sampling mode is linear, and wrap mode
-	///   is repeat.
-	///   - `BGFX_TEXTURE_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
+	/// @param[in] _flags Texture creation (see `BGFX_TEXTURE_*`.), and sampler (see `BGFX_SAMPLER_*`)
+	///   flags. Default texture sampling mode is linear, and wrap mode is repeat.
+	///   - `BGFX_SAMPLER_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
 	///     mode.
-	///   - `BGFX_TEXTURE_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
+	///   - `BGFX_SAMPLER_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
 	///     sampling.
 	///
 	/// @param[in] _mem Texture data. If `_mem` is non-NULL, created texture will be immutable. If
@@ -2589,7 +2607,7 @@ namespace bgfx
 		, bool     _hasMips
 		, uint16_t _numLayers
 		, TextureFormat::Enum _format
-		, uint32_t _flags = BGFX_TEXTURE_NONE
+		, uint64_t _flags = BGFX_TEXTURE_NONE|BGFX_SAMPLER_NONE
 		, const Memory* _mem = NULL
 		);
 
@@ -2602,11 +2620,11 @@ namespace bgfx
 	/// @param[in] _numLayers Number of layers in texture array. Must be 1 if caps
 	///   `BGFX_CAPS_TEXTURE_2D_ARRAY` flag is not set.
 	/// @param[in] _format Texture format. See: `TextureFormat::Enum`.
-	/// @param[in] _flags Default texture sampling mode is linear, and wrap mode
-	///   is repeat.
-	///   - `BGFX_TEXTURE_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
+	/// @param[in] _flags Texture creation (see `BGFX_TEXTURE_*`.), and sampler (see `BGFX_SAMPLER_*`)
+	///   flags. Default texture sampling mode is linear, and wrap mode is repeat.
+	///   - `BGFX_SAMPLER_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
 	///     mode.
-	///   - `BGFX_TEXTURE_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
+	///   - `BGFX_SAMPLER_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
 	///     sampling.
 	///
 	/// @attention C99 equivalent is `bgfx_create_texture_2d_scaled`.
@@ -2616,7 +2634,7 @@ namespace bgfx
 		, bool _hasMips
 		, uint16_t _numLayers
 		, TextureFormat::Enum _format
-		, uint32_t _flags = BGFX_TEXTURE_NONE
+		, uint64_t _flags = BGFX_TEXTURE_NONE|BGFX_SAMPLER_NONE
 		);
 
 	/// Create 3D texture.
@@ -2626,11 +2644,11 @@ namespace bgfx
 	/// @param[in] _depth Depth.
 	/// @param[in] _hasMips Indicates that texture contains full mip-map chain.
 	/// @param[in] _format Texture format. See: `TextureFormat::Enum`.
-	/// @param[in] _flags Default texture sampling mode is linear, and wrap mode
-	///   is repeat.
-	///   - `BGFX_TEXTURE_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
+	/// @param[in] _flags Texture creation (see `BGFX_TEXTURE_*`.), and sampler (see `BGFX_SAMPLER_*`)
+	///   flags. Default texture sampling mode is linear, and wrap mode is repeat.
+	///   - `BGFX_SAMPLER_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
 	///     mode.
-	///   - `BGFX_TEXTURE_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
+	///   - `BGFX_SAMPLER_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
 	///     sampling.
 	///
 	/// @param[in] _mem Texture data. If `_mem` is non-NULL, created texture will be immutable. If
@@ -2644,7 +2662,7 @@ namespace bgfx
 		, uint16_t _depth
 		, bool _hasMips
 		, TextureFormat::Enum _format
-		, uint32_t _flags = BGFX_TEXTURE_NONE
+		, uint64_t _flags = BGFX_TEXTURE_NONE|BGFX_SAMPLER_NONE
 		, const Memory* _mem = NULL
 		);
 
@@ -2655,11 +2673,11 @@ namespace bgfx
 	/// @param[in] _numLayers Number of layers in texture array. Must be 1 if caps
 	///   `BGFX_CAPS_TEXTURE_CUBE_ARRAY` flag is not set.
 	/// @param[in] _format Texture format. See: `TextureFormat::Enum`.
-	/// @param[in] _flags Default texture sampling mode is linear, and wrap mode
-	///   is repeat.
-	///   - `BGFX_TEXTURE_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
+	/// @param[in] _flags Texture creation (see `BGFX_TEXTURE_*`.), and sampler (see `BGFX_SAMPLER_*`)
+	///   flags. Default texture sampling mode is linear, and wrap mode is repeat.
+	///   - `BGFX_SAMPLER_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
 	///     mode.
-	///   - `BGFX_TEXTURE_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
+	///   - `BGFX_SAMPLER_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
 	///     sampling.
 	///
 	/// @param[in] _mem Texture data. If `_mem` is non-NULL, created texture will be immutable. If
@@ -2673,7 +2691,7 @@ namespace bgfx
 		, bool _hasMips
 		, uint16_t _numLayers
 		, TextureFormat::Enum _format
-		, uint32_t _flags = BGFX_TEXTURE_NONE
+		, uint64_t _flags = BGFX_TEXTURE_NONE|BGFX_SAMPLER_NONE
 		, const Memory* _mem = NULL
 		);
 
@@ -2842,9 +2860,9 @@ namespace bgfx
 	/// @param[in] _format Texture format. See: `TextureFormat::Enum`.
 	/// @param[in] _textureFlags Default texture sampling mode is linear, and wrap mode
 	///   is repeat.
-	///   - `BGFX_TEXTURE_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
+	///   - `BGFX_SAMPLER_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
 	///     mode.
-	///   - `BGFX_TEXTURE_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
+	///   - `BGFX_SAMPLER_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
 	///     sampling.
 	///
 	/// @returns Handle to frame buffer object.
@@ -2855,7 +2873,7 @@ namespace bgfx
 		  uint16_t _width
 		, uint16_t _height
 		, TextureFormat::Enum _format
-		, uint32_t _textureFlags = BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP
+		, uint64_t _textureFlags = BGFX_SAMPLER_U_CLAMP|BGFX_SAMPLER_V_CLAMP
 		);
 
 	/// Create frame buffer with size based on backbuffer ratio. Frame buffer will maintain ratio
@@ -2866,9 +2884,9 @@ namespace bgfx
 	/// @param[in] _format Texture format. See: `TextureFormat::Enum`.
 	/// @param[in] _textureFlags Default texture sampling mode is linear, and wrap mode
 	///   is repeat.
-	///   - `BGFX_TEXTURE_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
+	///   - `BGFX_SAMPLER_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
 	///     mode.
-	///   - `BGFX_TEXTURE_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
+	///   - `BGFX_SAMPLER_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
 	///     sampling.
 	///
 	/// @returns Handle to frame buffer object.
@@ -2878,7 +2896,7 @@ namespace bgfx
 	FrameBufferHandle createFrameBuffer(
 		  BackbufferRatio::Enum _ratio
 		, TextureFormat::Enum _format
-		, uint32_t _textureFlags = BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP
+		, uint64_t _textureFlags = BGFX_SAMPLER_U_CLAMP|BGFX_SAMPLER_V_CLAMP
 		);
 
 	/// Create MRT frame buffer from texture handles (simple).
@@ -2902,7 +2920,7 @@ namespace bgfx
 	/// mip level.
 	///
 	/// @param[in] _num Number of texture attachments.
-	/// @param[in] _attachment Attachment texture info. See: `Attachment`.
+	/// @param[in] _attachment Attachment texture info. See: `bgfx::Attachment`.
 	/// @param[in] _destroyTextures If true, textures will be destroyed when
 	///   frame buffer is destroyed.
 	///
@@ -2921,6 +2939,7 @@ namespace bgfx
 	/// @param[in] _nwh OS' target native window handle.
 	/// @param[in] _width Window back buffer width.
 	/// @param[in] _height Window back buffer height.
+	/// @param[in] _format Window back buffer color format.
 	/// @param[in] _depthFormat Window back buffer depth format.
 	///
 	/// @returns Handle to frame buffer object.
@@ -2934,7 +2953,8 @@ namespace bgfx
 		  void* _nwh
 		, uint16_t _width
 		, uint16_t _height
-		, TextureFormat::Enum _depthFormat = TextureFormat::UnknownDepth
+		, TextureFormat::Enum _format      = TextureFormat::Count
+		, TextureFormat::Enum _depthFormat = TextureFormat::Count
 		);
 
 	/// Obtain texture handle of frame buffer attachment.
@@ -3655,6 +3675,16 @@ namespace bgfx
 		, uint32_t _num
 		);
 
+	/// Set number of instances for auto generated instances use in conjuction
+	/// with gl_InstanceID.
+	///
+	/// @param[in] _numInstances Number of instances.
+	///
+	/// @attention Availability depends on: `BGFX_CAPS_VERTEX_ID`.
+	/// @attention C99 equivalent is `bgfx_set_instance_count`.
+	///
+	void setInstanceCount(uint32_t _numInstances);
+
 	/// Set texture stage for draw primitive.
 	///
 	/// @param[in] _stage Texture unit.
@@ -3662,9 +3692,9 @@ namespace bgfx
 	/// @param[in] _handle Texture handle.
 	/// @param[in] _flags Texture sampling mode. Default value UINT32_MAX uses
 	///   texture sampling settings from the texture.
-	///   - `BGFX_TEXTURE_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
+	///   - `BGFX_SAMPLER_[U/V/W]_[MIRROR/CLAMP]` - Mirror or clamp to edge wrap
 	///     mode.
-	///   - `BGFX_TEXTURE_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
+	///   - `BGFX_SAMPLER_[MIN/MAG/MIP]_[POINT/ANISOTROPIC]` - Point or anisotropic
 	///     sampling.
 	///
 	/// @attention C99 equivalent is `bgfx_set_texture`.
@@ -3698,7 +3728,7 @@ namespace bgfx
 	void submit(
 		  ViewId _id
 		, ProgramHandle _program
-		, int32_t _depth = 0
+		, uint32_t _depth = 0
 		, bool _preserveState = false
 		);
 
@@ -3717,7 +3747,7 @@ namespace bgfx
 		  ViewId _id
 		, ProgramHandle _program
 		, OcclusionQueryHandle _occlusionQuery
-		, int32_t _depth = 0
+		, uint32_t _depth = 0
 		, bool _preserveState = false
 		);
 
@@ -3741,7 +3771,7 @@ namespace bgfx
 		, IndirectBufferHandle _indirectHandle
 		, uint16_t _start = 0
 		, uint16_t _num = 1
-		, int32_t _depth = 0
+		, uint32_t _depth = 0
 		, bool _preserveState = false
 		);
 

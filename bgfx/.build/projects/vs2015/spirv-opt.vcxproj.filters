@@ -42,6 +42,9 @@
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\cfg_cleanup_pass.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\combine_access_chains.h">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\common_uniform_elim_pass.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
@@ -120,9 +123,6 @@
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\inline_pass.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\insert_extract_elim.h">
-      <Filter>3rdparty\spirv-tools\source\opt</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\instruction.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
@@ -162,7 +162,19 @@
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\log.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_dependence.h">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_descriptor.h">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_fission.h">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_fusion.h">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_fusion_pass.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_peeling.h">
@@ -175,9 +187,6 @@
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_utils.h">
-      <Filter>3rdparty\spirv-tools\source\opt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\make_unique.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\mem_pass.h">
@@ -207,10 +216,16 @@
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\propagator.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\reduce_load_size.h">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\redundancy_elimination.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\reflect.h">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\register_pressure.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\remove_duplicates_pass.h">
@@ -261,26 +276,11 @@
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\value_number_table.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\workaround1209.h">
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\vector_dce.h">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\bitutils.h">
-      <Filter>3rdparty\spirv-tools\source\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\bit_stream.h">
-      <Filter>3rdparty\spirv-tools\source\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\hex_float.h">
-      <Filter>3rdparty\spirv-tools\source\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\parse_number.h">
-      <Filter>3rdparty\spirv-tools\source\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\string_utils.h">
-      <Filter>3rdparty\spirv-tools\source\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\timer.h">
-      <Filter>3rdparty\spirv-tools\source\util</Filter>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\opt\workaround1209.h">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\assembly_grammar.h">
       <Filter>3rdparty\spirv-tools\source</Filter>
@@ -366,10 +366,28 @@
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\text_handler.h">
       <Filter>3rdparty\spirv-tools\source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\validate.h">
-      <Filter>3rdparty\spirv-tools\source</Filter>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\bit_vector.h">
+      <Filter>3rdparty\spirv-tools\source\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\bitutils.h">
+      <Filter>3rdparty\spirv-tools\source\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\hex_float.h">
+      <Filter>3rdparty\spirv-tools\source\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\parse_number.h">
+      <Filter>3rdparty\spirv-tools\source\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\string_utils.h">
+      <Filter>3rdparty\spirv-tools\source\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\util\timer.h">
+      <Filter>3rdparty\spirv-tools\source\util</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\val\decoration.h">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\spirv-tools\source\val\validate.h">
       <Filter>3rdparty\spirv-tools\source\val</Filter>
     </ClInclude>
   </ItemGroup>
@@ -393,6 +411,9 @@
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\cfg_cleanup_pass.cpp">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\combine_access_chains.cpp">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\common_uniform_elim_pass.cpp">
@@ -473,9 +494,6 @@
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\inline_pass.cpp">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\insert_extract_elim.cpp">
-      <Filter>3rdparty\spirv-tools\source\opt</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\instruction.cpp">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClCompile>
@@ -506,7 +524,22 @@
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\local_ssa_elim_pass.cpp">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_dependence.cpp">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_dependence_helpers.cpp">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_descriptor.cpp">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_fission.cpp">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_fusion.cpp">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_fusion_pass.cpp">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\loop_peeling.cpp">
@@ -545,7 +578,13 @@
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\propagator.cpp">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\reduce_load_size.cpp">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\redundancy_elimination.cpp">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\register_pressure.cpp">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\remove_duplicates_pass.cpp">
@@ -593,17 +632,11 @@
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\value_number_table.cpp">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\workaround1209.cpp">
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\vector_dce.cpp">
       <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\util\bit_stream.cpp">
-      <Filter>3rdparty\spirv-tools\source\util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\util\parse_number.cpp">
-      <Filter>3rdparty\spirv-tools\source\util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\util\string_utils.cpp">
-      <Filter>3rdparty\spirv-tools\source\util</Filter>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\opt\workaround1209.cpp">
+      <Filter>3rdparty\spirv-tools\source\opt</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\assembly_grammar.cpp">
       <Filter>3rdparty\spirv-tools\source</Filter>
@@ -632,9 +665,6 @@
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\libspirv.cpp">
       <Filter>3rdparty\spirv-tools\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\message.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\name_mapper.cpp">
       <Filter>3rdparty\spirv-tools\source</Filter>
     </ClCompile>
@@ -656,9 +686,6 @@
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\spirv_endian.cpp">
       <Filter>3rdparty\spirv-tools\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\spirv_stats.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\spirv_target_env.cpp">
       <Filter>3rdparty\spirv-tools\source</Filter>
     </ClCompile>
@@ -674,74 +701,14 @@
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\text_handler.cpp">
       <Filter>3rdparty\spirv-tools\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\util\bit_vector.cpp">
+      <Filter>3rdparty\spirv-tools\source\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_adjacency.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\util\parse_number.cpp">
+      <Filter>3rdparty\spirv-tools\source\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_arithmetics.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_atomics.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_barriers.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_bitwise.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_builtins.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_capability.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_cfg.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_composites.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_conversion.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_datarules.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_decorations.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_derivatives.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_ext_inst.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_id.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_image.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_instruction.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_layout.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_literals.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_logicals.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_primitives.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\validate_type_unique.cpp">
-      <Filter>3rdparty\spirv-tools\source</Filter>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\util\string_utils.cpp">
+      <Filter>3rdparty\spirv-tools\source\util</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\basic_block.cpp">
       <Filter>3rdparty\spirv-tools\source\val</Filter>
@@ -753,6 +720,102 @@
       <Filter>3rdparty\spirv-tools\source\val</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\instruction.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_adjacency.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_annotation.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_arithmetics.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_atomics.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_barriers.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_bitwise.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_builtins.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_capability.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_cfg.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_composites.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_constants.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_conversion.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_datarules.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_debug.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_decorations.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_derivatives.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_execution_limitations.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_ext_inst.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_function.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_id.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_image.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_interfaces.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_instruction.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_layout.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_literals.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_logicals.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_memory.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_mode_setting.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_non_uniform.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_primitives.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate_type.cpp">
+      <Filter>3rdparty\spirv-tools\source\val</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validate.cpp">
       <Filter>3rdparty\spirv-tools\source\val</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\spirv-tools\source\val\validation_state.cpp">

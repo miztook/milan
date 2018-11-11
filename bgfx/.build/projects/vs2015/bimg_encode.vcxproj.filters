@@ -46,6 +46,9 @@
     <Filter Include="bimg\3rdparty\pvrtc">
       <UniqueIdentifier>{E4DF1F00-5041-FD0D-D9AE-43C0450F34CD}</UniqueIdentifier>
     </Filter>
+    <Filter Include="bimg\3rdparty\astc">
+      <UniqueIdentifier>{202DE9C1-0C11-AA17-7571-A46A61749499}</UniqueIdentifier>
+    </Filter>
     <Filter Include="bimg\3rdparty\tinyexr">
       <UniqueIdentifier>{08C0E79C-742C-A397-3D20-3BF5A94BC5FF}</UniqueIdentifier>
     </Filter>
@@ -267,6 +270,21 @@
     <ClInclude Include="..\..\..\..\bimg\3rdparty\pvrtc\RgbBitmap.h">
       <Filter>bimg\3rdparty\pvrtc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\bimg\3rdparty\astc\astc_codec_internals.h">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\bimg\3rdparty\astc\astc_lib.h">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\bimg\3rdparty\astc\mathlib.h">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\bimg\3rdparty\astc\softfloat.h">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\bimg\3rdparty\astc\vectypes.h">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\bimg\3rdparty\tinyexr\tinyexr.h">
       <Filter>bimg\3rdparty\tinyexr</Filter>
     </ClInclude>
@@ -397,6 +415,75 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\bimg\3rdparty\pvrtc\PvrTcPacket.cpp">
       <Filter>bimg\3rdparty\pvrtc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_averages_and_directions.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_block_sizes2.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_color_quantize.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_color_unquantize.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_compress_symbolic.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_compute_variance.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_decompress_symbolic.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_encoding_choice_error.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_find_best_partitioning.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_ideal_endpoints_and_weights.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_imageblock.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_integer_sequence.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_kmeans_partitioning.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_lib.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_partition_tables.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_percentile_tables.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_pick_best_endpoint_format.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_quantization.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_symbolic_physical.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_weight_align.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\astc_weight_quant_xfer_tables.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\mathlib.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\bimg\3rdparty\astc\softfloat.cpp">
+      <Filter>bimg\3rdparty\astc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\bimg\3rdparty\iqa\source\convolve.c">
       <Filter>bimg\3rdparty\iqa\source</Filter>

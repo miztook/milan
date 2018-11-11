@@ -105,6 +105,9 @@
     <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\parseVersions.h">
       <Filter>3rdparty\glslang\glslang\MachineIndependent</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\pch.h">
+      <Filter>3rdparty\glslang\glslang\MachineIndependent</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\propagateNoContraction.h">
       <Filter>3rdparty\glslang\glslang\MachineIndependent</Filter>
     </ClInclude>
@@ -162,6 +165,9 @@
     <ClInclude Include="..\..\..\3rdparty\glslang\hlsl\hlslTokenStream.h">
       <Filter>3rdparty\glslang\hlsl</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\glslang\hlsl\pch.h">
+      <Filter>3rdparty\glslang\hlsl</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\bitutils.h">
       <Filter>3rdparty\glslang\SPIRV</Filter>
     </ClInclude>
@@ -202,6 +208,9 @@
       <Filter>3rdparty\glslang\SPIRV</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\SPVRemapper.h">
+      <Filter>3rdparty\glslang\SPIRV</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\SpvTools.h">
       <Filter>3rdparty\glslang\SPIRV</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\3rdparty\glslang\OGLCompilersDLL\InitializeDll.h">
@@ -255,6 +264,9 @@
       <Filter>3rdparty\glslang\glslang\MachineIndependent</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\ParseHelper.cpp">
+      <Filter>3rdparty\glslang\glslang\MachineIndependent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\pch.cpp">
       <Filter>3rdparty\glslang\glslang\MachineIndependent</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\PoolAlloc.cpp">
@@ -320,6 +332,9 @@
     <ClCompile Include="..\..\..\3rdparty\glslang\hlsl\hlslTokenStream.cpp">
       <Filter>3rdparty\glslang\hlsl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\glslang\hlsl\pch.cpp">
+      <Filter>3rdparty\glslang\hlsl</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\glslang\SPIRV\disassemble.cpp">
       <Filter>3rdparty\glslang\SPIRV</Filter>
     </ClCompile>
@@ -338,7 +353,13 @@
     <ClCompile Include="..\..\..\3rdparty\glslang\SPIRV\SpvBuilder.cpp">
       <Filter>3rdparty\glslang\SPIRV</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\glslang\SPIRV\SpvPostProcess.cpp">
+      <Filter>3rdparty\glslang\SPIRV</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\glslang\SPIRV\SPVRemapper.cpp">
+      <Filter>3rdparty\glslang\SPIRV</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\glslang\SPIRV\SpvTools.cpp">
       <Filter>3rdparty\glslang\SPIRV</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\3rdparty\glslang\OGLCompilersDLL\InitializeDll.cpp">

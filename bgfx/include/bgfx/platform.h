@@ -48,20 +48,6 @@ namespace bgfx
 	///   to bgfx::init, render thread won't be created by bgfx::init call.
 	RenderFrame::Enum renderFrame(int32_t _msecs = -1);
 
-	/// Platform data.
-	///
-	/// @attention C99 equivalent is `bgfx_platform_data_t`.
-	///
-	struct PlatformData
-	{
-		void* ndt;          //!< Native display type.
-		void* nwh;          //!< Native window handle.
-		void* context;      //!< GL context, or D3D device.
-		void* backBuffer;   //!< GL backbuffer, or D3D render target view.
-		void* backBufferDS; //!< Backbuffer depth/stencil.
-		void* session;      //!< ovrSession, for Oculus SDK
-	};
-
 	/// Set platform data.
 	///
 	/// @warning Must be called before `bgfx::init`.
@@ -134,7 +120,7 @@ namespace bgfx
 	///
 	/// @attention C99 equivalent is `bgfx_override_internal_texture`.
 	///
-	uintptr_t overrideInternal(TextureHandle _handle, uint16_t _width, uint16_t _height, uint8_t _numMips, TextureFormat::Enum _format, uint32_t _flags = BGFX_TEXTURE_NONE);
+	uintptr_t overrideInternal(TextureHandle _handle, uint16_t _width, uint16_t _height, uint8_t _numMips, TextureFormat::Enum _format, uint32_t _flags = BGFX_SAMPLER_NONE);
 
 } // namespace bgfx
 

@@ -97,9 +97,6 @@ HlslParseContext::HlslParseContext(TSymbolTable& symbolTable, TIntermediate& int
 
     if (language == EShLangGeometry)
         globalOutputDefaults.layoutStream = 0;
-
-    if (spvVersion.spv == 0 || spvVersion.vulkan == 0)
-        infoSink.info << "ERROR: HLSL currently only supported when requesting SPIR-V for Vulkan.\n";
 }
 
 HlslParseContext::~HlslParseContext()
@@ -6246,7 +6243,8 @@ bool HlslParseContext::constructorError(const TSourceLoc& loc, TIntermNode* node
     bool constructingMatrix = false;
     switch (op) {
     case EOpConstructTextureSampler:
-        return constructorTextureSamplerError(loc, function);
+        error(loc, "unhandled texture constructor", "constructor", "");
+        return true;
     case EOpConstructMat2x2:
     case EOpConstructMat2x3:
     case EOpConstructMat2x4:
@@ -6436,67 +6434,6 @@ bool HlslParseContext::isScalarConstructor(const TIntermNode* node)
     return node->getAsTyped() != nullptr &&
            node->getAsTyped()->isScalar() &&
            (node->getAsAggregate() == nullptr || node->getAsAggregate()->getOp() != EOpNull);
-}
-
-// Verify all the correct semantics for constructing a combined texture/sampler.
-// Return true if the semantics are incorrect.
-bool HlslParseContext::constructorTextureSamplerError(const TSourceLoc& loc, const TFunction& function)
-{
-    TString constructorName = function.getType().getBasicTypeString();  // TODO: performance: should not be making copy; interface needs to change
-    const char* token = constructorName.c_str();
-
-    // exactly two arguments needed
-    if (function.getParamCount() != 2) {
-        error(loc, "sampler-constructor requires two arguments", token, "");
-        return true;
-    }
-
-    // For now, not allowing arrayed constructors, the rest of this function
-    // is set up to allow them, if this test is removed:
-    if (function.getType().isArray()) {
-        error(loc, "sampler-constructor cannot make an array of samplers", token, "");
-        return true;
-    }
-
-    // first argument
-    //  * the constructor's first argument must be a texture type
-    //  * the dimensionality (1D, 2D, 3D, Cube, Rect, Buffer, MS, and Array)
-    //    of the texture type must match that of the constructed sampler type
-    //    (that is, the suffixes of the type of the first argument and the
-    //    type of the constructor will be spelled the same way)
-    if (function[0].type->getBasicType() != EbtSampler ||
-        ! function[0].type->getSampler().isTexture() ||
-        function[0].type->isArray()) {
-        error(loc, "sampler-constructor first argument must be a scalar textureXXX type", token, "");
-        return true;
-    }
-    // simulate the first argument's impact on the result type, so it can be compared with the encapsulated operator!=()
-    TSampler texture = function.getType().getSampler();
-    texture.combined = false;
-    texture.shadow = false;
-    if (texture != function[0].type->getSampler()) {
-        error(loc, "sampler-constructor first argument must match type and dimensionality of constructor type", token, "");
-        return true;
-    }
-
-    // second argument
-    //   * the constructor's second argument must be a scalar of type
-    //     *sampler* or *samplerShadow*
-    //   * the presence or absence of depth comparison (Shadow) must match
-    //     between the constructed sampler type and the type of the second argument
-    if (function[1].type->getBasicType() != EbtSampler ||
-        ! function[1].type->getSampler().isPureSampler() ||
-        function[1].type->isArray()) {
-        error(loc, "sampler-constructor second argument must be a scalar type 'sampler'", token, "");
-        return true;
-    }
-    if (function.getType().getSampler().shadow != function[1].type->getSampler().shadow) {
-        error(loc, "sampler-constructor second argument presence of shadow must match constructor presence of shadow",
-              token, "");
-        return true;
-    }
-
-    return false;
 }
 
 // Checks to see if a void variable has been declared and raise an error message for such a case
@@ -7866,6 +7803,8 @@ TVariable* HlslParseContext::declareNonArray(const TSourceLoc& loc, const TStrin
 // Returning nullptr just means there is no code to execute to handle the
 // initializer, which will, for example, be the case for constant initializers.
 //
+// Returns a subtree that accomplished the initialization.
+//
 TIntermNode* HlslParseContext::executeInitializer(const TSourceLoc& loc, TIntermTyped* initializer, TVariable* variable)
 {
     //
@@ -8173,8 +8112,6 @@ TIntermTyped* HlslParseContext::addConstructor(const TSourceLoc& loc, TIntermTyp
     TIntermAggregate* aggrNode = node->getAsAggregate();
     TOperator op = intermediate.mapTypeToConstructorOp(type);
 
-    // Combined texture-sampler constructors are completely semantic checked
-    // in constructorTextureSamplerError()
     if (op == EOpConstructTextureSampler)
         return intermediate.setAggregateOperator(aggrNode, op, type, loc);
 
@@ -8618,7 +8555,7 @@ void HlslParseContext::declareBlock(const TSourceLoc& loc, TType& type, const TS
 
     // Process the members
     fixBlockLocations(loc, type.getQualifier(), typeList, memberWithLocation, memberWithoutLocation);
-    fixBlockXfbOffsets(type.getQualifier(), typeList);
+    fixXfbOffsets(type.getQualifier(), typeList);
     fixBlockUniformOffsets(type.getQualifier(), typeList);
 
     // reverse merge, so that currentBlockQualifier now has all layout information
@@ -8701,7 +8638,7 @@ void HlslParseContext::fixBlockLocations(const TSourceLoc& loc, TQualifier& qual
     }
 }
 
-void HlslParseContext::fixBlockXfbOffsets(TQualifier& qualifier, TTypeList& typeList)
+void HlslParseContext::fixXfbOffsets(TQualifier& qualifier, TTypeList& typeList)
 {
     // "If a block is qualified with xfb_offset, all its
     // members are assigned transform feedback buffer offsets. If a block is not qualified with xfb_offset, any

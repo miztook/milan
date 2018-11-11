@@ -170,9 +170,9 @@ public:
 
 		m_uffizi = loadTexture("textures/uffizi.ktx"
 				, 0
-				| BGFX_TEXTURE_U_CLAMP
-				| BGFX_TEXTURE_V_CLAMP
-				| BGFX_TEXTURE_W_CLAMP
+				| BGFX_SAMPLER_U_CLAMP
+				| BGFX_SAMPLER_V_CLAMP
+				| BGFX_SAMPLER_W_CLAMP
 				);
 
 		m_skyProgram     = loadProgram("vs_hdr_skybox",  "fs_hdr_skybox");
@@ -307,10 +307,10 @@ public:
 					, false
 					, 1
 					, bgfx::TextureFormat::BGRA8
-					, ((msaa + 1) << BGFX_TEXTURE_RT_MSAA_SHIFT) | BGFX_TEXTURE_U_CLAMP | BGFX_TEXTURE_V_CLAMP
+					, (uint64_t(msaa + 1) << BGFX_TEXTURE_RT_MSAA_SHIFT) | BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP
 					);
 
-				const uint32_t textureFlags = BGFX_TEXTURE_RT_WRITE_ONLY|( (msaa+1)<<BGFX_TEXTURE_RT_MSAA_SHIFT);
+				const uint64_t textureFlags = BGFX_TEXTURE_RT_WRITE_ONLY|(uint64_t(msaa+1)<<BGFX_TEXTURE_RT_MSAA_SHIFT);
 
 				bgfx::TextureFormat::Enum depthFormat =
 					  bgfx::isTextureValid(0, false, 1, bgfx::TextureFormat::D16,   textureFlags) ? bgfx::TextureFormat::D16

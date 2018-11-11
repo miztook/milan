@@ -617,16 +617,6 @@ public:
 			float proj[16];
 
 			// Set view and projection matrix for view 0.
-			const bgfx::HMD* hmd = bgfx::getHMD();
-			if (NULL != hmd && 0 != (hmd->flags & BGFX_HMD_RENDERING) )
-			{
-				float eye[3];
-				cameraGetPosition(eye);
-				bx::mtxQuatTranslationHMD(view, hmd->eye[0].rotation, eye);
-				bgfx::setViewTransform(0, view, hmd->eye[0].projection, BGFX_VIEW_STEREO, hmd->eye[1].projection);
-				bgfx::setViewRect(0, 0, 0, hmd->width, hmd->height);
-			}
-			else
 			{
 				bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
 
@@ -703,12 +693,25 @@ public:
 				dde.setWireframe(wireframe);
 				dde.setColor(wireframe ? 0xffff00ff : 0xff00ff00);
 				dde.draw(m_bunny);
+				dde.setTransform(NULL);
 			}
 			dde.pop();
 
-			dde.setTranslate(0.0f, -2.0f, 0.0f);
-			dde.drawGrid(Axis::Y, zero, 20, 1.0f);
-			dde.setTransform(NULL);
+			{
+				const float normal[] = { 0.0f,  1.0f, 0.0f };
+				const float pos[]    = { 0.0f, -2.0f, 0.0f };
+
+				Plane plane;
+				bx::calcPlane(plane.m_normal, normal, pos);
+
+				dde.setColor(false
+					|| intersect(&dde, ray, plane)
+					? selected
+					: 0xffffffff
+					);
+
+				dde.drawGrid(Axis::Y, pos, 20, 1.0f);
+			}
 
 			dde.drawFrustum(mtxVp);
 
