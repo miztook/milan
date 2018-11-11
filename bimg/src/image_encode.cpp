@@ -12,6 +12,7 @@
 #include <nvtt/nvtt.h>
 #include <pvrtc/PvrTcEncoder.h>
 #include <edtaa3/edtaa3func.h>
+#include <astc/astc_lib.h>
 
 BX_PRAGMA_DIAGNOSTIC_PUSH();
 BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4100) // warning C4100: 'alloc_context': unreferenced formal parameter
@@ -34,6 +35,14 @@ namespace bimg
 		squish::kColourRangeFit,            // Fastest
 	};
 	BX_STATIC_ASSERT(Quality::Count == BX_COUNTOF(s_squishQuality) );
+
+    static const ASTC_COMPRESS_MODE s_astcQuality[] =
+    {
+        ASTC_COMPRESS_MEDIUM,       // Default
+        ASTC_COMPRESS_THOROUGH,     // Highest
+        ASTC_COMPRESS_FAST,         // Fastest
+    };
+    BX_STATIC_ASSERT(Quality::Count == BX_COUNTOF(s_astcQuality));
 
 	void imageEncodeFromRgba8(bx::AllocatorI* _allocator, void* _dst, const void* _src, uint32_t _width, uint32_t _height, uint32_t _depth, TextureFormat::Enum _format, Quality::Enum _quality, bx::Error* _err)
 	{
@@ -122,6 +131,22 @@ namespace bimg
 				}
 				break;
 
+			case TextureFormat::ASTC4x4:
+			case TextureFormat::ASTC5x5:
+			case TextureFormat::ASTC6x6:
+			case TextureFormat::ASTC8x5:
+			case TextureFormat::ASTC8x6:
+			case TextureFormat::ASTC10x5:
+				{
+                    const bimg::ImageBlockInfo& astcBlockInfo = bimg::getBlockInfo(_format);
+
+                    ASTC_COMPRESS_MODE  compress_mode = s_astcQuality[_quality];
+					ASTC_DECODE_MODE    decode_mode   = ASTC_DECODE_LDR_LINEAR;
+
+                    astc_compress(_width, _height, src, ASTC_RGBA, srcPitch, astcBlockInfo.blockWidth, astcBlockInfo.blockHeight, compress_mode, decode_mode, dst);
+				}
+				break;
+
 			case TextureFormat::BGRA8:
 				imageSwizzleBgra8(dst, dstPitch, _width, _height, src, srcPitch);
 				break;
@@ -200,15 +225,21 @@ namespace bimg
 	{
 		switch (_dstFormat)
 		{
-			case bimg::TextureFormat::BC1:
-			case bimg::TextureFormat::BC2:
-			case bimg::TextureFormat::BC3:
-			case bimg::TextureFormat::BC4:
-			case bimg::TextureFormat::BC5:
-			case bimg::TextureFormat::ETC1:
-			case bimg::TextureFormat::ETC2:
-			case bimg::TextureFormat::PTC14:
-			case bimg::TextureFormat::PTC14A:
+			case TextureFormat::BC1:
+			case TextureFormat::BC2:
+			case TextureFormat::BC3:
+			case TextureFormat::BC4:
+			case TextureFormat::BC5:
+			case TextureFormat::ETC1:
+			case TextureFormat::ETC2:
+			case TextureFormat::PTC14:
+			case TextureFormat::PTC14A:
+			case TextureFormat::ASTC4x4:
+			case TextureFormat::ASTC5x5:
+			case TextureFormat::ASTC6x6:
+			case TextureFormat::ASTC8x5:
+			case TextureFormat::ASTC8x6:
+			case TextureFormat::ASTC10x5:
 				{
 					uint8_t* temp = (uint8_t*)BX_ALLOC(_allocator, _width*_height*_depth*4);
 					imageDecodeToRgba8(_allocator, temp, _src, _width, _height, _width*4, _srcFormat);
@@ -337,7 +368,7 @@ namespace bimg
 		BX_FREE(_allocator, gy);
 	}
 
-	void imageMakeDist(bx::AllocatorI* _allocator, void* _dst, uint32_t _width, uint32_t _height, uint32_t _srcPitch, float _edge, const void* _src)
+	void imageMakeDist(bx::AllocatorI* _allocator, void* _dst, uint32_t _width, uint32_t _height, uint32_t _srcPitch, const void* _src)
 	{
 		const uint32_t numPixels = _width*_height;
 
@@ -368,12 +399,9 @@ namespace bimg
 
 		uint8_t* dst = (uint8_t*)_dst;
 
-		double edgeOffset = _edge*0.5;
-		double invEdge = 1.0/_edge;
-
 		for (uint32_t ii = 0; ii < numPixels; ++ii)
 		{
-			double dist = bx::clamp( ( (outside[ii] - inside[ii])+edgeOffset) * invEdge, 0.0, 1.0);
+			double dist = bx::clamp( (outside[ii] - inside[ii]) * 1.0/16.0 + 0.5, 0.0, 1.0);
 			dst[ii] = 255-uint8_t(dist * 255.0);
 		}
 
@@ -439,7 +467,7 @@ namespace bimg
 					, 4, 3
 					, STBIR_FLAG_ALPHA_PREMULTIPLIED
 					, STBIR_EDGE_CLAMP
-					, STBIR_FILTER_CUBICBSPLINE
+					, STBIR_FILTER_BOX
 					, STBIR_COLORSPACE_LINEAR
 					, NULL
 					);

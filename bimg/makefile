@@ -46,8 +46,8 @@ projgen: ## Generate project files for all configurations.
 	$(GENIE) --with-tools --gcc=mingw-gcc     gmake
 	$(GENIE) --with-tools --gcc=linux-gcc     gmake
 	$(GENIE) --with-tools --gcc=osx           gmake
-	$(GENIE) --with-tools --xcode=osx         xcode4
-	$(GENIE) --with-tools --xcode=ios         xcode4
+	$(GENIE) --with-tools --xcode=osx         xcode8
+	$(GENIE) --with-tools --xcode=ios         xcode8
 	$(GENIE)              --gcc=freebsd       gmake
 	$(GENIE)                                --gcc=android-arm     gmake
 	$(GENIE)                                --gcc=android-mips    gmake
@@ -308,7 +308,7 @@ texturev: .build/projects/$(BUILD_PROJECT_DIR) ## Build texturev tool.
 	$(SILENT) $(MAKE) -C .build/projects/$(BUILD_PROJECT_DIR) texturev config=$(BUILD_TOOLS_CONFIG)
 	$(SILENT) cp .build/$(BUILD_OUTPUT_DIR)/bin/texturev$(BUILD_TOOLS_SUFFIX)$(EXE) tools/bin/$(OS)/texturev$(EXE)
 
-tools: geometryc shaderc texturec texturev ## Build tools.
+tools: texturec ## Build tools.
 
 clean-tools: ## Clean tools projects.
 	-$(SILENT) rm -r .build/projects/$(BUILD_PROJECT_DIR)
