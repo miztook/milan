@@ -89,9 +89,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty;../../3rdparty/iqa/include;../../3rdparty/nvtt;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;_HAS_EXCEPTIONS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -100,8 +100,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;_HAS_EXCEPTIONS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty;../../3rdparty/iqa/include;../../3rdparty/nvtt;</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -111,8 +111,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty;../../3rdparty/iqa/include;../../3rdparty/nvtt;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_HAS_EXCEPTIONS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -127,8 +127,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty;../../3rdparty/iqa/include;../../3rdparty/nvtt;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_HAS_EXCEPTIONS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -137,6 +137,75 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\3rdparty\astc\astc_averages_and_directions.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_block_sizes2.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_color_quantize.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_color_unquantize.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_compress_symbolic.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_compute_variance.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_decompress_symbolic.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_encoding_choice_error.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_find_best_partitioning.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_ideal_endpoints_and_weights.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_imageblock.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_integer_sequence.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_kmeans_partitioning.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_lib.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_partition_tables.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_percentile_tables.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_pick_best_endpoint_format.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_quantization.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_symbolic_physical.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_weight_align.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\astc_weight_quant_xfer_tables.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\mathlib.cpp" />
+    <ClCompile Include="..\..\3rdparty\astc\softfloat.cpp" />
+    <ClCompile Include="..\..\3rdparty\edtaa3\edtaa3func.cpp" />
+    <ClCompile Include="..\..\3rdparty\etc1\etc1.cpp" />
+    <ClCompile Include="..\..\3rdparty\etc2\ProcessRGB.cpp" />
+    <ClCompile Include="..\..\3rdparty\etc2\Tables.cpp" />
+    <ClCompile Include="..\..\3rdparty\iqa\source\convolve.c" />
+    <ClCompile Include="..\..\3rdparty\iqa\source\decimate.c" />
+    <ClCompile Include="..\..\3rdparty\iqa\source\math_utils.c" />
+    <ClCompile Include="..\..\3rdparty\iqa\source\mse.c" />
+    <ClCompile Include="..\..\3rdparty\iqa\source\ms_ssim.c" />
+    <ClCompile Include="..\..\3rdparty\iqa\source\psnr.c" />
+    <ClCompile Include="..\..\3rdparty\iqa\source\ssim.c" />
+    <ClCompile Include="..\..\3rdparty\libsquish\alpha.cpp" />
+    <ClCompile Include="..\..\3rdparty\libsquish\clusterfit.cpp" />
+    <ClCompile Include="..\..\3rdparty\libsquish\colourblock.cpp" />
+    <ClCompile Include="..\..\3rdparty\libsquish\colourfit.cpp" />
+    <ClCompile Include="..\..\3rdparty\libsquish\colourset.cpp" />
+    <ClCompile Include="..\..\3rdparty\libsquish\maths.cpp" />
+    <ClCompile Include="..\..\3rdparty\libsquish\rangefit.cpp" />
+    <ClCompile Include="..\..\3rdparty\libsquish\singlecolourfit.cpp" />
+    <ClCompile Include="..\..\3rdparty\libsquish\squish.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc6h\zoh.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc6h\zohone.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc6h\zohtwo.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc6h\zoh_utils.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc7\avpcl.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc7\avpcl_mode0.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc7\avpcl_mode1.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc7\avpcl_mode2.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc7\avpcl_mode3.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc7\avpcl_mode4.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc7\avpcl_mode5.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc7\avpcl_mode6.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc7\avpcl_mode7.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\bc7\avpcl_utils.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\nvmath\fitting.cpp" />
+    <ClCompile Include="..\..\3rdparty\nvtt\nvtt.cpp" />
+    <ClCompile Include="..\..\3rdparty\pvrtc\BitScale.cpp" />
+    <ClCompile Include="..\..\3rdparty\pvrtc\MortonTable.cpp" />
+    <ClCompile Include="..\..\3rdparty\pvrtc\PvrTcDecoder.cpp" />
+    <ClCompile Include="..\..\3rdparty\pvrtc\PvrTcEncoder.cpp" />
+    <ClCompile Include="..\..\3rdparty\pvrtc\PvrTcPacket.cpp" />
+    <ClCompile Include="..\..\src\bimg\image.cpp" />
+    <ClCompile Include="..\..\src\bimg\image_cubemap_filter.cpp" />
+    <ClCompile Include="..\..\src\bimg\image_decode.cpp" />
+    <ClCompile Include="..\..\src\bimg\image_encode.cpp" />
+    <ClCompile Include="..\..\src\bimg\image_gnf.cpp" />
     <ClCompile Include="..\..\src\bx\allocator.cpp" />
     <ClCompile Include="..\..\src\bx\bx.cpp" />
     <ClCompile Include="..\..\src\bx\commandline.cpp" />
@@ -161,6 +230,87 @@
     <ClCompile Include="..\..\src\mygfx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\3rdparty\astc\astc_codec_internals.h" />
+    <ClInclude Include="..\..\3rdparty\astc\astc_lib.h" />
+    <ClInclude Include="..\..\3rdparty\astc\mathlib.h" />
+    <ClInclude Include="..\..\3rdparty\astc\softfloat.h" />
+    <ClInclude Include="..\..\3rdparty\astc\vectypes.h" />
+    <ClInclude Include="..\..\3rdparty\edtaa3\edtaa3func.h" />
+    <ClInclude Include="..\..\3rdparty\etc1\etc1.h" />
+    <ClInclude Include="..\..\3rdparty\etc2\Math.hpp" />
+    <ClInclude Include="..\..\3rdparty\etc2\ProcessCommon.hpp" />
+    <ClInclude Include="..\..\3rdparty\etc2\ProcessRGB.hpp" />
+    <ClInclude Include="..\..\3rdparty\etc2\Tables.hpp" />
+    <ClInclude Include="..\..\3rdparty\etc2\Types.hpp" />
+    <ClInclude Include="..\..\3rdparty\etc2\Vector.hpp" />
+    <ClInclude Include="..\..\3rdparty\iqa\include\convolve.h" />
+    <ClInclude Include="..\..\3rdparty\iqa\include\decimate.h" />
+    <ClInclude Include="..\..\3rdparty\iqa\include\iqa.h" />
+    <ClInclude Include="..\..\3rdparty\iqa\include\iqa_os.h" />
+    <ClInclude Include="..\..\3rdparty\iqa\include\math_utils.h" />
+    <ClInclude Include="..\..\3rdparty\iqa\include\ssim.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\alpha.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\clusterfit.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\colourblock.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\colourfit.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\colourset.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\config.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\maths.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\rangefit.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\simd.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\simd_float.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\singlecolourfit.h" />
+    <ClInclude Include="..\..\3rdparty\libsquish\squish.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc6h\bits.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc6h\shapes_two.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc6h\tile.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc6h\zoh.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc6h\zoh_utils.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc7\avpcl.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc7\avpcl_utils.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc7\bits.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc7\endpts.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc7\shapes_three.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc7\shapes_two.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\bc7\tile.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\array.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\debug.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\defsgnucdarwin.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\defsgnuclinux.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\defsgnucwin32.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\defsvcwin32.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\foreach.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\hash.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\memory.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\nvcore.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\posh.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\stdstream.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\stream.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\strlib.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvcore\utils.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvmath\fitting.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvmath\matrix.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvmath\nvmath.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvmath\plane.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvmath\vector.h" />
+    <ClInclude Include="..\..\3rdparty\nvtt\nvtt.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\AlphaBitmap.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\Bitmap.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\BitScale.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\BitUtility.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\ColorRgba.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\Interval.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\MortonTable.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\Point2.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\PvrTcDecoder.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\PvrTcEncoder.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\PvrTcPacket.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\RgbaBitmap.h" />
+    <ClInclude Include="..\..\3rdparty\pvrtc\RgbBitmap.h" />
+    <ClInclude Include="..\..\3rdparty\tinyexr\tinyexr.h" />
+    <ClInclude Include="..\..\include\bimg\bimg.h" />
+    <ClInclude Include="..\..\include\bimg\decode.h" />
+    <ClInclude Include="..\..\include\bimg\encode.h" />
     <ClInclude Include="..\..\include\bx\allocator.h" />
     <ClInclude Include="..\..\include\bx\bx.h" />
     <ClInclude Include="..\..\include\bx\commandline.h" />
@@ -202,9 +352,18 @@
     <ClInclude Include="..\..\include\compat\msvc\inttypes.h" />
     <ClInclude Include="..\..\include\compat\msvc\pre1600\stdint.h" />
     <ClInclude Include="..\..\include\compat\msvc\stdbool.h" />
+    <ClInclude Include="..\..\src\bimg\bimg_p.h" />
     <ClInclude Include="..\..\src\bx\bx_p.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\3rdparty\libsquish\LICENSE" />
+    <None Include="..\..\3rdparty\libsquish\README" />
+    <None Include="..\..\3rdparty\libsquish\singlecolourlookup.inl" />
+    <None Include="..\..\3rdparty\nvtt\nvcore\array.inl" />
+    <None Include="..\..\3rdparty\nvtt\nvmath\matrix.inl" />
+    <None Include="..\..\3rdparty\nvtt\nvmath\plane.inl" />
+    <None Include="..\..\3rdparty\nvtt\nvmath\vector.inl" />
+    <None Include="..\..\3rdparty\pvrtc\README.md" />
     <None Include="..\..\include\bx\inline\allocator.inl" />
     <None Include="..\..\include\bx\inline\bx.inl" />
     <None Include="..\..\include\bx\inline\cpu.inl" />
@@ -233,6 +392,11 @@
     <None Include="..\..\include\bx\inline\spscqueue.inl" />
     <None Include="..\..\include\bx\inline\string.inl" />
     <None Include="..\..\include\bx\inline\uint32_t.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\3rdparty\astc\license.txt" />
+    <Text Include="..\..\3rdparty\astc\readme.txt" />
+    <Text Include="..\..\3rdparty\pvrtc\LICENSE.TXT" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
