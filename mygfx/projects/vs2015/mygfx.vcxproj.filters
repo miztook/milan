@@ -81,11 +81,14 @@
     <Filter Include="3rdparty\nvtt\nvmath">
       <UniqueIdentifier>{6ed9d1e3-636d-4f65-891b-a9aac3dae487}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\mygfx">
+      <UniqueIdentifier>{401129c9-7c33-44f4-96fd-ce83cb682dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mygfx">
+      <UniqueIdentifier>{722ea8b2-d046-4a3a-9f57-ebd7e542be2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\mygfx.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\bx\os.cpp">
       <Filter>src\bx</Filter>
     </ClCompile>
@@ -355,6 +358,12 @@
     </ClCompile>
     <ClCompile Include="..\..\3rdparty\nvtt\nvmath\fitting.cpp">
       <Filter>3rdparty\nvtt\nvmath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mygfx\mygfx.cpp">
+      <Filter>src\mygfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mygfx\mygfx_p.h">
+      <Filter>src\mygfx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -729,6 +738,12 @@
     </ClInclude>
     <ClInclude Include="..\..\3rdparty\nvtt\nvcore\utils.h">
       <Filter>3rdparty\nvtt\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\mygfx\defines.h">
+      <Filter>include\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\mygfx\mygfx.h">
+      <Filter>include\mygfx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

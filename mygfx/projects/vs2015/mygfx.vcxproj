@@ -227,7 +227,8 @@
     <ClCompile Include="..\..\src\bx\thread.cpp" />
     <ClCompile Include="..\..\src\bx\timer.cpp" />
     <ClCompile Include="..\..\src\bx\url.cpp" />
-    <ClCompile Include="..\..\src\mygfx.cpp" />
+    <ClCompile Include="..\..\src\mygfx\mygfx.cpp" />
+    <ClCompile Include="..\..\src\mygfx\mygfx_p.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\3rdparty\astc\astc_codec_internals.h" />
@@ -352,6 +353,8 @@
     <ClInclude Include="..\..\include\compat\msvc\inttypes.h" />
     <ClInclude Include="..\..\include\compat\msvc\pre1600\stdint.h" />
     <ClInclude Include="..\..\include\compat\msvc\stdbool.h" />
+    <ClInclude Include="..\..\include\mygfx\defines.h" />
+    <ClInclude Include="..\..\include\mygfx\mygfx.h" />
     <ClInclude Include="..\..\src\bimg\bimg_p.h" />
     <ClInclude Include="..\..\src\bx\bx_p.h" />
   </ItemGroup>
