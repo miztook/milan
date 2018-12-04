@@ -75,14 +75,14 @@ namespace bimg
 
 		static uint8_t pngMagic[] = { 0x89, 0x50, 0x4E, 0x47, 0x0d, 0x0a };
 
-		if (0 != bx::memCmp(_data, pngMagic, sizeof(pngMagic) ) )
+		if (0 != bx::memCmp(_data, pngMagic, sizeof(pngMagic)))
 		{
 			return NULL;
 		}
 
 		ImageContainer* output = NULL;
 		bimg::TextureFormat::Enum format = bimg::TextureFormat::RGBA8;
-		uint32_t width  = 0;
+		uint32_t width = 0;
 		uint32_t height = 0;
 
 		unsigned error;
@@ -95,110 +95,110 @@ namespace bimg
 
 		if (0 != error)
 		{
-			_err->setError(BIMG_ERROR, lodepng_error_text(error) );
+			_err->setError(BIMG_ERROR, lodepng_error_text(error));
 		}
 		else
 		{
-			bool palette   = false;
+			bool palette = false;
 			bool supported = false;
 
 			switch (state.info_raw.bitdepth)
 			{
-				case 1:
-				case 2:
-				case 4:
-					format    = bimg::TextureFormat::R8;
-					palette   = false;
+			case 1:
+			case 2:
+			case 4:
+				format = bimg::TextureFormat::R8;
+				palette = false;
+				supported = true;
+				break;
+
+			case 8:
+				switch (state.info_raw.colortype)
+				{
+				case LCT_GREY:
+					format = bimg::TextureFormat::R8;
 					supported = true;
 					break;
 
-				case 8:
-					switch (state.info_raw.colortype)
+				case LCT_GREY_ALPHA:
+					format = bimg::TextureFormat::RG8;
+					supported = true;
+					break;
+
+				case LCT_RGB:
+					format = bimg::TextureFormat::RGB8;
+					supported = true;
+					break;
+
+				case LCT_RGBA:
+					format = bimg::TextureFormat::RGBA8;
+					supported = true;
+					break;
+
+				case LCT_PALETTE:
+					format = bimg::TextureFormat::RGBA8;
+					palette = true;
+					supported = true;
+					break;
+				}
+				break;
+
+			case 16:
+				switch (state.info_raw.colortype)
+				{
+				case LCT_GREY:
+					for (uint32_t ii = 0, num = width*height; ii < num; ++ii)
 					{
-						case LCT_GREY:
-							format = bimg::TextureFormat::R8;
-							supported = true;
-							break;
-
-						case LCT_GREY_ALPHA:
-							format = bimg::TextureFormat::RG8;
-							supported = true;
-							break;
-
-						case LCT_RGB:
-							format = bimg::TextureFormat::RGB8;
-							supported = true;
-							break;
-
-						case LCT_RGBA:
-							format = bimg::TextureFormat::RGBA8;
-							supported = true;
-							break;
-
-						case LCT_PALETTE:
-							format  = bimg::TextureFormat::RGBA8;
-							palette = true;
-							supported = true;
-							break;
+						uint16_t* rgba = (uint16_t*)data + ii;
+						rgba[0] = bx::toHostEndian(rgba[0], false);
 					}
+					format = bimg::TextureFormat::R16;
+					supported = true;
 					break;
 
-				case 16:
-					switch (state.info_raw.colortype)
+				case LCT_GREY_ALPHA:
+					for (uint32_t ii = 0, num = width*height; ii < num; ++ii)
 					{
-						case LCT_GREY:
-							for (uint32_t ii = 0, num = width*height; ii < num; ++ii)
-							{
-								uint16_t* rgba = (uint16_t*)data + ii;
-								rgba[0] = bx::toHostEndian(rgba[0], false);
-							}
-							format = bimg::TextureFormat::R16;
-							supported = true;
-							break;
-
-						case LCT_GREY_ALPHA:
-							for (uint32_t ii = 0, num = width*height; ii < num; ++ii)
-							{
-								uint16_t* rgba = (uint16_t*)data + ii*2;
-								rgba[0] = bx::toHostEndian(rgba[0], false);
-								rgba[1] = bx::toHostEndian(rgba[1], false);
-							}
-							format = bimg::TextureFormat::RG16;
-							supported = true;
-							break;
-
-						case LCT_RGB:
-							for (uint32_t ii = 0, num = width*height; ii < num; ++ii)
-							{
-								uint16_t* rgba = (uint16_t*)data + ii*3;
-								rgba[0] = bx::toHostEndian(rgba[0], false);
-								rgba[1] = bx::toHostEndian(rgba[1], false);
-								rgba[2] = bx::toHostEndian(rgba[2], false);
-							}
-							format = bimg::TextureFormat::RGBA16;
-							supported = true;
-							break;
-
-						case LCT_RGBA:
-							for (uint32_t ii = 0, num = width*height; ii < num; ++ii)
-							{
-								uint16_t* rgba = (uint16_t*)data + ii*4;
-								rgba[0] = bx::toHostEndian(rgba[0], false);
-								rgba[1] = bx::toHostEndian(rgba[1], false);
-								rgba[2] = bx::toHostEndian(rgba[2], false);
-								rgba[3] = bx::toHostEndian(rgba[3], false);
-							}
-							format = bimg::TextureFormat::RGBA16;
-							supported = true;
-							break;
-
-						case LCT_PALETTE:
-							break;
+						uint16_t* rgba = (uint16_t*)data + ii * 2;
+						rgba[0] = bx::toHostEndian(rgba[0], false);
+						rgba[1] = bx::toHostEndian(rgba[1], false);
 					}
+					format = bimg::TextureFormat::RG16;
+					supported = true;
 					break;
 
-				default:
+				case LCT_RGB:
+					for (uint32_t ii = 0, num = width*height; ii < num; ++ii)
+					{
+						uint16_t* rgba = (uint16_t*)data + ii * 3;
+						rgba[0] = bx::toHostEndian(rgba[0], false);
+						rgba[1] = bx::toHostEndian(rgba[1], false);
+						rgba[2] = bx::toHostEndian(rgba[2], false);
+					}
+					format = bimg::TextureFormat::RGBA16;
+					supported = true;
 					break;
+
+				case LCT_RGBA:
+					for (uint32_t ii = 0, num = width*height; ii < num; ++ii)
+					{
+						uint16_t* rgba = (uint16_t*)data + ii * 4;
+						rgba[0] = bx::toHostEndian(rgba[0], false);
+						rgba[1] = bx::toHostEndian(rgba[1], false);
+						rgba[2] = bx::toHostEndian(rgba[2], false);
+						rgba[3] = bx::toHostEndian(rgba[3], false);
+					}
+					format = bimg::TextureFormat::RGBA16;
+					supported = true;
+					break;
+
+				case LCT_PALETTE:
+					break;
+				}
+				break;
+
+			default:
+				break;
 			}
 
 			if (supported)
@@ -207,16 +207,16 @@ namespace bimg
 
 				TextureFormat::Enum dstFormat = format;
 				if (1 == state.info_raw.bitdepth
-				||  2 == state.info_raw.bitdepth
-				||  4 == state.info_raw.bitdepth)
+					|| 2 == state.info_raw.bitdepth
+					|| 4 == state.info_raw.bitdepth)
 				{
 					copyData = NULL;
 				}
-				else if (16      == state.info_raw.bitdepth
-					 &&  LCT_RGB == state.info_raw.colortype)
+				else if (16 == state.info_raw.bitdepth
+					&&  LCT_RGB == state.info_raw.colortype)
 				{
 					dstFormat = bimg::TextureFormat::RGBA16;
-					copyData  = NULL;
+					copyData = NULL;
 				}
 				else if (palette)
 				{
@@ -232,64 +232,63 @@ namespace bimg
 					, false
 					, false
 					, copyData
-					);
+				);
 
 				if (1 == state.info_raw.bitdepth)
 				{
-					for (uint32_t ii = 0, num = width*height/8; ii < num; ++ii)
+					for (uint32_t ii = 0, num = width*height / 8; ii < num; ++ii)
 					{
 						uint8_t* src = (uint8_t*)data + ii;
 						uint8_t eightBits = src[0];
 
-						uint8_t* dst = (uint8_t*)output->m_data + ii*8;
-						dst[0] = uint8_t( (eightBits>>7)&0x1)*255;
-						dst[1] = uint8_t( (eightBits>>6)&0x1)*255;
-						dst[2] = uint8_t( (eightBits>>5)&0x1)*255;
-						dst[3] = uint8_t( (eightBits>>4)&0x1)*255;
-						dst[4] = uint8_t( (eightBits>>3)&0x1)*255;
-						dst[5] = uint8_t( (eightBits>>2)&0x1)*255;
-						dst[6] = uint8_t( (eightBits>>1)&0x1)*255;
-						dst[7] = uint8_t( (eightBits   )&0x1)*255;
-
+						uint8_t* dst = (uint8_t*)output->m_data + ii * 8;
+						dst[0] = uint8_t((eightBits >> 7) & 0x1) * 255;
+						dst[1] = uint8_t((eightBits >> 6) & 0x1) * 255;
+						dst[2] = uint8_t((eightBits >> 5) & 0x1) * 255;
+						dst[3] = uint8_t((eightBits >> 4) & 0x1) * 255;
+						dst[4] = uint8_t((eightBits >> 3) & 0x1) * 255;
+						dst[5] = uint8_t((eightBits >> 2) & 0x1) * 255;
+						dst[6] = uint8_t((eightBits >> 1) & 0x1) * 255;
+						dst[7] = uint8_t((eightBits) & 0x1) * 255;
 					}
 				}
 				else if (2 == state.info_raw.bitdepth)
 				{
-					for (uint32_t ii = 0, num = width*height/4; ii < num; ++ii)
+					for (uint32_t ii = 0, num = width*height / 4; ii < num; ++ii)
 					{
 						uint8_t* src = (uint8_t*)data + ii;
 						uint8_t eightBits = src[0];
 
-						uint8_t* dst = (uint8_t*)output->m_data + ii*4;
+						uint8_t* dst = (uint8_t*)output->m_data + ii * 4;
 						// Note: not exactly precise.
 						// Correct way: dst[0] = uint8_t(float( (eightBits>>6)&0x3)*(255.0f/4.0f) );
-						dst[0] = uint8_t(uint32_t(((eightBits>>6)&0x3)*64)&0xff);
-						dst[1] = uint8_t(uint32_t(((eightBits>>4)&0x3)*64)&0xff);
-						dst[2] = uint8_t(uint32_t(((eightBits>>2)&0x3)*64)&0xff);
-						dst[3] = uint8_t(uint32_t(((eightBits   )&0x3)*64)&0xff);
+						dst[0] = uint8_t(uint32_t(((eightBits >> 6) & 0x3) * 64) & 0xff);
+						dst[1] = uint8_t(uint32_t(((eightBits >> 4) & 0x3) * 64) & 0xff);
+						dst[2] = uint8_t(uint32_t(((eightBits >> 2) & 0x3) * 64) & 0xff);
+						dst[3] = uint8_t(uint32_t(((eightBits) & 0x3) * 64) & 0xff);
 					}
 				}
 				else if (4 == state.info_raw.bitdepth)
 				{
-					for (uint32_t ii = 0, num = width*height/2; ii < num; ++ii)
+					for (uint32_t ii = 0, num = width*height / 2; ii < num; ++ii)
 					{
 						uint8_t* src = (uint8_t*)data + ii;
 						uint8_t eightBits = src[0];
 
-						uint8_t* dst = (uint8_t*)output->m_data + ii*2;
+						uint8_t* dst = (uint8_t*)output->m_data + ii * 2;
 						// Note: not exactly precise.
 						// Correct way: dst[0] = uint8_t(float( (eightBits>>4)&0xf)*(255.0f/16.0f) );
-						dst[0] = uint8_t(uint32_t(((eightBits>>4)&0xf)*16)&0xff);
-						dst[1] = uint8_t(uint32_t(((eightBits   )&0xf)*16)&0xff);
+						dst[0] = uint8_t(uint32_t(((eightBits >> 4) & 0xf) * 16) & 0xff);
+						dst[1] = uint8_t(uint32_t(((eightBits) & 0xf) * 16) & 0xff);
 					}
 				}
-				else if (16      == state.info_raw.bitdepth
-					 &&  LCT_RGB == state.info_raw.colortype)
+				else if (16 == state.info_raw.bitdepth
+					&&  LCT_RGB == state.info_raw.colortype)
 				{
 					for (uint32_t ii = 0, num = width*height; ii < num; ++ii)
 					{
-						const uint16_t* src = (uint16_t*)data + ii*3;
-						      uint16_t* dst = (uint16_t*)output->m_data + ii*4;
+						const uint16_t* src = (uint16_t*)data + ii * 3;
+						uint16_t* dst = (uint16_t*)output->m_data + ii * 4;
 						dst[0] = src[0];
 						dst[1] = src[1];
 						dst[2] = src[2];
@@ -300,7 +299,7 @@ namespace bimg
 				{
 					for (uint32_t ii = 0, num = width*height; ii < num; ++ii)
 					{
-						bx::memCopy( (uint8_t*)output->m_data + ii*4, state.info_raw.palette + data[ii]*4, 4);
+						bx::memCopy((uint8_t*)output->m_data + ii * 4, state.info_raw.palette + data[ii] * 4, 4);
 					}
 				}
 			}
@@ -328,7 +327,7 @@ namespace bimg
 		}
 
 		bimg::TextureFormat::Enum format = bimg::TextureFormat::RGBA8;
-		uint32_t width  = 0;
+		uint32_t width = 0;
 		uint32_t height = 0;
 
 		uint8_t* data = NULL;
@@ -351,22 +350,22 @@ namespace bimg
 				{
 					const EXRChannelInfo& channel = exrHeader.channels[ii];
 					if (UINT8_MAX == idxR
-					&&  0 == bx::strCmp(channel.name, "R") )
+						&& 0 == bx::strCmp(channel.name, "R"))
 					{
 						idxR = ii;
 					}
 					else if (UINT8_MAX == idxG
-					&&  0 == bx::strCmp(channel.name, "G") )
+						&& 0 == bx::strCmp(channel.name, "G"))
 					{
 						idxG = ii;
 					}
 					else if (UINT8_MAX == idxB
-					&&  0 == bx::strCmp(channel.name, "B") )
+						&& 0 == bx::strCmp(channel.name, "B"))
 					{
 						idxB = ii;
 					}
 					else if (UINT8_MAX == idxA
-					&&  0 == bx::strCmp(channel.name, "A") )
+						&& 0 == bx::strCmp(channel.name, "A"))
 					{
 						idxA = ii;
 					}
@@ -388,7 +387,7 @@ namespace bimg
 						srcBpp += 32;
 						dstBpp = asFloat ? 64 : 32;
 						format = asFloat ? TextureFormat::RG32F : TextureFormat::RG16F;
-						stepG  = 1;
+						stepG = 1;
 					}
 
 					if (UINT8_MAX != idxB)
@@ -396,7 +395,7 @@ namespace bimg
 						srcBpp += 32;
 						dstBpp = asFloat ? 128 : 64;
 						format = asFloat ? TextureFormat::RGBA32F : TextureFormat::RGBA16F;
-						stepB  = 1;
+						stepB = 1;
 					}
 
 					if (UINT8_MAX != idxA)
@@ -404,11 +403,11 @@ namespace bimg
 						srcBpp += 32;
 						dstBpp = asFloat ? 128 : 64;
 						format = asFloat ? TextureFormat::RGBA32F : TextureFormat::RGBA16F;
-						stepA  = 1;
+						stepA = 1;
 					}
 
-					data   = (uint8_t*)BX_ALLOC(_allocator, exrImage.width * exrImage.height * dstBpp/8);
-					width  = exrImage.width;
+					data = (uint8_t*)BX_ALLOC(_allocator, exrImage.width * exrImage.height * dstBpp / 8);
+					width = exrImage.width;
 					height = exrImage.height;
 
 					if (asFloat)
@@ -419,7 +418,7 @@ namespace bimg
 						const float* srcB = UINT8_MAX == idxB ? &zero : (const float*)(exrImage.images)[idxB];
 						const float* srcA = UINT8_MAX == idxA ? &zero : (const float*)(exrImage.images)[idxA];
 
-						const uint32_t bytesPerPixel = dstBpp/8;
+						const uint32_t bytesPerPixel = dstBpp / 8;
 						for (uint32_t ii = 0, num = exrImage.width * exrImage.height; ii < num; ++ii)
 						{
 							float rgba[4] =
@@ -445,7 +444,7 @@ namespace bimg
 						const uint16_t* srcB = UINT8_MAX == idxB ? &zero : (const uint16_t*)(exrImage.images)[idxB];
 						const uint16_t* srcA = UINT8_MAX == idxA ? &zero : (const uint16_t*)(exrImage.images)[idxA];
 
-						const uint32_t bytesPerPixel = dstBpp/8;
+						const uint32_t bytesPerPixel = dstBpp / 8;
 						for (uint32_t ii = 0, num = exrImage.width * exrImage.height; ii < num; ++ii)
 						{
 							uint16_t rgba[4] =
@@ -495,7 +494,7 @@ namespace bimg
 				, false
 				, false
 				, data
-				);
+			);
 			BX_FREE(_allocator, data);
 		}
 
@@ -506,19 +505,19 @@ namespace bimg
 	{
 		BX_ERROR_SCOPE(_err);
 
-		const int isHdr = stbi_is_hdr_from_memory( (const uint8_t*)_data, (int)_size);
+		const int isHdr = stbi_is_hdr_from_memory((const uint8_t*)_data, (int)_size);
 
 		void* data;
-		uint32_t width  = 0;
+		uint32_t width = 0;
 		uint32_t height = 0;
 		int comp = 0;
 		if (isHdr)
 		{
-			data = stbi_loadf_from_memory( (const uint8_t*)_data, (int)_size, (int*)&width, (int*)&height, &comp, 4);
+			data = stbi_loadf_from_memory((const uint8_t*)_data, (int)_size, (int*)&width, (int*)&height, &comp, 4);
 		}
 		else
 		{
-			data = stbi_load_from_memory ( (const uint8_t*)_data, (int)_size, (int*)&width, (int*)&height, &comp, 0);
+			data = stbi_load_from_memory((const uint8_t*)_data, (int)_size, (int*)&width, (int*)&height, &comp, 0);
 		}
 
 		if (NULL == data)
@@ -536,10 +535,10 @@ namespace bimg
 		{
 			switch (comp)
 			{
-				case 1:  format = bimg::TextureFormat::R8;   break;
-				case 2:  format = bimg::TextureFormat::RG8;  break;
-				case 3:  format = bimg::TextureFormat::RGB8; break;
-				default: break;
+			case 1:  format = bimg::TextureFormat::R8;   break;
+			case 2:  format = bimg::TextureFormat::RG8;  break;
+			case 3:  format = bimg::TextureFormat::RGB8; break;
+			default: break;
 			}
 		}
 
@@ -552,7 +551,7 @@ namespace bimg
 			, false
 			, false
 			, data
-			);
+		);
 		stbi_image_free(data);
 
 		return output;
@@ -568,50 +567,50 @@ namespace bimg
 		bx::readHE(&reader, magic, false, &err);
 
 		if (!err.isOk()
-		||  0xffd8 != magic)
+			|| 0xffd8 != magic)
 		{
 			return NULL;
 		}
 
 		Orientation::Enum orientation = Orientation::R0;
 
-		while (err.isOk() )
+		while (err.isOk())
 		{
 			bx::readHE(&reader, magic, false, &err);
 
 			uint16_t size;
 			bx::readHE(&reader, size, false, &err);
 
-			if (!err.isOk() )
+			if (!err.isOk())
 			{
 				return NULL;
 			}
 
 			if (0xffe1 != magic)
 			{
-				bx::seek(&reader, size-2);
+				bx::seek(&reader, size - 2);
 				continue;
 			}
 
 			char exif00[6];
 			bx::read(&reader, exif00, 6, &err);
 
-			if (0 == bx::memCmp(exif00, "Exif\0\0", 6) )
+			if (0 == bx::memCmp(exif00, "Exif\0\0", 6))
 			{
 				uint16_t iimm = 0;
 				bx::read(&reader, iimm, &err);
 
 				const bool littleEndian = iimm == 0x4949; //II - Intel - little endian
 				if (!err.isOk()
-				&&  !littleEndian
-				&&   iimm != 0x4d4d) // MM - Motorola - big endian
+					&& !littleEndian
+					&&   iimm != 0x4d4d) // MM - Motorola - big endian
 				{
 					return NULL;
 				}
 
 				bx::readHE(&reader, magic, littleEndian, &err);
 				if (!err.isOk()
-				||  0x2a != magic)
+					|| 0x2a != magic)
 				{
 					return NULL;
 				}
@@ -620,12 +619,12 @@ namespace bimg
 				bx::readHE(&reader, ifd0, littleEndian, &err);
 
 				if (!err.isOk()
-				||  8 > ifd0)
+					|| 8 > ifd0)
 				{
 					return NULL;
 				}
 
-				bx::seek(&reader, ifd0-8);
+				bx::seek(&reader, ifd0 - 8);
 
 				uint16_t numEntries;
 				bx::readHE(&reader, numEntries, littleEndian, &err);
@@ -695,13 +694,13 @@ namespace bimg
 	{
 		BX_ERROR_SCOPE(_err);
 
-		ImageContainer* input = imageParseDds     (_allocator, _data, _size, _err)        ;
-		input = NULL == input ? imageParseKtx     (_allocator, _data, _size, _err) : input;
-		input = NULL == input ? imageParsePvr3    (_allocator, _data, _size, _err) : input;
-		input = NULL == input ? imageParseGnf     (_allocator, _data, _size, _err) : input;
-		input = NULL == input ? imageParseLodePng (_allocator, _data, _size, _err) : input;
-		input = NULL == input ? imageParseTinyExr (_allocator, _data, _size, _err) : input;
-		input = NULL == input ? imageParseJpeg    (_allocator, _data, _size, _err) : input;
+		ImageContainer* input = imageParseDds(_allocator, _data, _size, _err);
+		input = NULL == input ? imageParseKtx(_allocator, _data, _size, _err) : input;
+		input = NULL == input ? imageParsePvr3(_allocator, _data, _size, _err) : input;
+		input = NULL == input ? imageParseGnf(_allocator, _data, _size, _err) : input;
+		input = NULL == input ? imageParseLodePng(_allocator, _data, _size, _err) : input;
+		input = NULL == input ? imageParseTinyExr(_allocator, _data, _size, _err) : input;
+		input = NULL == input ? imageParseJpeg(_allocator, _data, _size, _err) : input;
 		input = NULL == input ? imageParseStbImage(_allocator, _data, _size, _err) : input;
 
 		if (NULL == input)
@@ -724,5 +723,4 @@ namespace bimg
 
 		return output;
 	}
-
 } // namespace bimg

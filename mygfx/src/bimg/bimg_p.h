@@ -17,7 +17,7 @@
 #define BIMG_CHUNK_MAGIC_TEX BX_MAKEFOURCC('T', 'E', 'X', 0x0)
 #define BIMG_CHUNK_MAGIC_GNF BX_MAKEFOURCC('G', 'N', 'F', ' ')
 
-BX_ERROR_RESULT(BIMG_ERROR, BX_MAKEFOURCC('b', 'i', 'm', 'g') );
+BX_ERROR_RESULT(BIMG_ERROR, BX_MAKEFOURCC('b', 'i', 'm', 'g'));
 
 #ifndef BIMG_CONFIG_ASTC_DECODE
 #	define BIMG_CONFIG_ASTC_DECODE 0
@@ -48,7 +48,7 @@ namespace bimg
 		if (_hasMips)
 		{
 			const uint32_t max = bx::max(_width, _height, _depth);
-			const uint32_t num = 1 + uint32_t(bx::log2(float(max) ) );
+			const uint32_t num = 1 + uint32_t(bx::log2(float(max)));
 
 			return uint8_t(num);
 		}
@@ -58,17 +58,17 @@ namespace bimg
 
 	///
 	void imageConvert(
-		  void* _dst
+		void* _dst
 		, uint32_t _bpp
 		, bx::PackFn _pack
 		, const void* _src
 		, bx::UnpackFn _unpack
 		, uint32_t _size
-		);
+	);
 
 	///
 	void imageConvert(
-		  void* _dst
+		void* _dst
 		, uint32_t _dstBpp
 		, bx::PackFn _pack
 		, const void* _src
@@ -77,15 +77,14 @@ namespace bimg
 		, uint32_t _width
 		, uint32_t _height
 		, uint32_t _srcPitch
-		);
+	);
 
 	///
 	bool imageParseGnf(
-		  ImageContainer& _imageContainer
+		ImageContainer& _imageContainer
 		, bx::ReaderSeekerI* _reader
 		, bx::Error* _err
-		);
-
+	);
 } // namespace bimg
 
 #endif // BIMG_P_H_HEADER_GUARD
