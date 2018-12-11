@@ -748,6 +748,15 @@
     <ClInclude Include="..\..\src\mygfx\config.h">
       <Filter>src\mygfx</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\mygfx\platform.h">
+      <Filter>include\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\shader.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\vertexdecl.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\bx\inline\allocator.inl">

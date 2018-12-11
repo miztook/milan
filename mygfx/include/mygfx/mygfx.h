@@ -15,223 +15,265 @@
 
 namespace mygfx
 {
-	enum class Fatal
+	struct Fatal
 	{
-		DebugCheck,
-		InvalidShader,
-		UnableToInitialize,
-		UnableToCreateTexture,
-		DeviceLost,
+		enum Enum
+		{
+			DebugCheck,
+			InvalidShader,
+			UnableToInitialize,
+			UnableToCreateTexture,
+			DeviceLost,
 
-		Count
+			Count
+		};
 	};
 
-	enum class RendererType
+	struct RendererType
 	{
-		Noop,         //!< No rendering.
-		Direct3D9,    //!< Direct3D 9.0
-		Direct3D11,   //!< Direct3D 11.0
-		Direct3D12,   //!< Direct3D 12.0
-		Gnm,          //!< GNM
-		Metal,        //!< Metal
-		OpenGLES,     //!< OpenGL ES 2.0+
-		OpenGL,       //!< OpenGL 2.1+
-		Vulkan,       //!< Vulkan
+		/// Renderer types:
+		enum Enum
+		{
+			Noop,         //!< No rendering.
+			Direct3D9,    //!< Direct3D 9.0
+			Direct3D11,   //!< Direct3D 11.0
+			Direct3D12,   //!< Direct3D 12.0
+			Metal,        //!< Metal
+			OpenGLES,     //!< OpenGL ES 2.0+
+			OpenGL,       //!< OpenGL 2.1+
+			Vulkan,       //!< Vulkan
 
-		Count
+			Count
+		};
 	};
 
-	enum class Access
+	struct Access
 	{
-		Read,      //!< Read
-		Write,     //!< Write
-		ReadWrite, //!< Read and write
+		/// Access:
+		enum Enum
+		{
+			Read,      //!< Read
+			Write,     //!< Write
+			ReadWrite, //!< Read and write
 
-		Count
+			Count
+		};
 	};
 
-	enum class Attrib
+	struct Attrib
 	{
-		Position,  //!< a_position
-		Normal,    //!< a_normal
-		Tangent,   //!< a_tangent
-		Bitangent, //!< a_bitangent
-		Color0,    //!< a_color0
-		Color1,    //!< a_color1
-		Color2,    //!< a_color2
-		Color3,    //!< a_color3
-		Indices,   //!< a_indices
-		Weight,    //!< a_weight
-		TexCoord0, //!< a_texcoord0
-		TexCoord1, //!< a_texcoord1
-		TexCoord2, //!< a_texcoord2
-		TexCoord3, //!< a_texcoord3
-		TexCoord4, //!< a_texcoord4
-		TexCoord5, //!< a_texcoord5
-		TexCoord6, //!< a_texcoord6
-		TexCoord7, //!< a_texcoord7
+		/// Corresponds to vertex shader attribute.
+		enum Enum
+		{
+			Position,  //!< a_position
+			Normal,    //!< a_normal
+			Tangent,   //!< a_tangent
+			Bitangent, //!< a_bitangent
+			Color0,    //!< a_color0
+			Color1,    //!< a_color1
+			Color2,    //!< a_color2
+			Color3,    //!< a_color3
+			Indices,   //!< a_indices
+			Weight,    //!< a_weight
+			TexCoord0, //!< a_texcoord0
+			TexCoord1, //!< a_texcoord1
+			TexCoord2, //!< a_texcoord2
+			TexCoord3, //!< a_texcoord3
+			TexCoord4, //!< a_texcoord4
+			TexCoord5, //!< a_texcoord5
+			TexCoord6, //!< a_texcoord6
+			TexCoord7, //!< a_texcoord7
 
-		Count
+			Count
+		};
 	};
 
-	enum class AttribType
+	struct AttribType
 	{
-		Uint8,  //!< Uint8
-		Uint10, //!< Uint10, availability depends on: `BGFX_CAPS_VERTEX_ATTRIB_UINT10`.
-		Int16,  //!< Int16
-		Half,   //!< Half, availability depends on: `BGFX_CAPS_VERTEX_ATTRIB_HALF`.
-		Float,  //!< Float
+		/// Attribute types:
+		enum Enum
+		{
+			Uint8,  //!< Uint8
+			Uint10, //!< Uint10, availability depends on: `BGFX_CAPS_VERTEX_ATTRIB_UINT10`.
+			Int16,  //!< Int16
+			Half,   //!< Half, availability depends on: `BGFX_CAPS_VERTEX_ATTRIB_HALF`.
+			Float,  //!< Float
 
-		Count
+			Count
+		};
 	};
 
-	enum class TextureFormat
+	struct TextureFormat
 	{
-		BC1,          //!< DXT1
-		BC2,          //!< DXT3
-		BC3,          //!< DXT5
-		BC4,          //!< LATC1/ATI1
-		BC5,          //!< LATC2/ATI2
-		BC6H,         //!< BC6H
-		BC7,          //!< BC7
-		ETC1,         //!< ETC1 RGB8
-		ETC2,         //!< ETC2 RGB8
-		ETC2A,        //!< ETC2 RGBA8
-		ETC2A1,       //!< ETC2 RGB8A1
-		PTC12,        //!< PVRTC1 RGB 2BPP
-		PTC14,        //!< PVRTC1 RGB 4BPP
-		PTC12A,       //!< PVRTC1 RGBA 2BPP
-		PTC14A,       //!< PVRTC1 RGBA 4BPP
-		PTC22,        //!< PVRTC2 RGBA 2BPP
-		PTC24,        //!< PVRTC2 RGBA 4BPP
-		ATC,          //!< ATC RGB 4BPP
-		ATCE,         //!< ATCE RGBA 8 BPP explicit alpha
-		ATCI,         //!< ATCI RGBA 8 BPP interpolated alpha
-		ASTC4x4,      //!< ASTC 4x4 8.0 BPP
-		ASTC5x5,      //!< ASTC 5x5 5.12 BPP
-		ASTC6x6,      //!< ASTC 6x6 3.56 BPP
-		ASTC8x5,      //!< ASTC 8x5 3.20 BPP
-		ASTC8x6,      //!< ASTC 8x6 2.67 BPP
-		ASTC10x5,     //!< ASTC 10x5 2.56 BPP
+		/// Texture formats:
+		enum Enum
+		{
+			BC1,          //!< DXT1
+			BC2,          //!< DXT3
+			BC3,          //!< DXT5
+			BC4,          //!< LATC1/ATI1
+			BC5,          //!< LATC2/ATI2
+			BC6H,         //!< BC6H
+			BC7,          //!< BC7
+			ETC1,         //!< ETC1 RGB8
+			ETC2,         //!< ETC2 RGB8
+			ETC2A,        //!< ETC2 RGBA8
+			ETC2A1,       //!< ETC2 RGB8A1
+			PTC12,        //!< PVRTC1 RGB 2BPP
+			PTC14,        //!< PVRTC1 RGB 4BPP
+			PTC12A,       //!< PVRTC1 RGBA 2BPP
+			PTC14A,       //!< PVRTC1 RGBA 4BPP
+			PTC22,        //!< PVRTC2 RGBA 2BPP
+			PTC24,        //!< PVRTC2 RGBA 4BPP
+			ATC,          //!< ATC RGB 4BPP
+			ATCE,         //!< ATCE RGBA 8 BPP explicit alpha
+			ATCI,         //!< ATCI RGBA 8 BPP interpolated alpha
+			ASTC4x4,      //!< ASTC 4x4 8.0 BPP
+			ASTC5x5,      //!< ASTC 5x5 5.12 BPP
+			ASTC6x6,      //!< ASTC 6x6 3.56 BPP
+			ASTC8x5,      //!< ASTC 8x5 3.20 BPP
+			ASTC8x6,      //!< ASTC 8x6 2.67 BPP
+			ASTC10x5,     //!< ASTC 10x5 2.56 BPP
 
-		Unknown,      // Compressed formats above.
+			Unknown,      // Compressed formats above.
 
-		R1,
-		A8,
-		R8,
-		R8I,
-		R8U,
-		R8S,
-		R16,
-		R16I,
-		R16U,
-		R16F,
-		R16S,
-		R32I,
-		R32U,
-		R32F,
-		RG8,
-		RG8I,
-		RG8U,
-		RG8S,
-		RG16,
-		RG16I,
-		RG16U,
-		RG16F,
-		RG16S,
-		RG32I,
-		RG32U,
-		RG32F,
-		RGB8,
-		RGB8I,
-		RGB8U,
-		RGB8S,
-		RGB9E5F,
-		BGRA8,
-		RGBA8,
-		RGBA8I,
-		RGBA8U,
-		RGBA8S,
-		RGBA16,
-		RGBA16I,
-		RGBA16U,
-		RGBA16F,
-		RGBA16S,
-		RGBA32I,
-		RGBA32U,
-		RGBA32F,
-		R5G6B5,
-		RGBA4,
-		RGB5A1,
-		RGB10A2,
-		RG11B10F,
+			R1,
+			A8,
+			R8,
+			R8I,
+			R8U,
+			R8S,
+			R16,
+			R16I,
+			R16U,
+			R16F,
+			R16S,
+			R32I,
+			R32U,
+			R32F,
+			RG8,
+			RG8I,
+			RG8U,
+			RG8S,
+			RG16,
+			RG16I,
+			RG16U,
+			RG16F,
+			RG16S,
+			RG32I,
+			RG32U,
+			RG32F,
+			RGB8,
+			RGB8I,
+			RGB8U,
+			RGB8S,
+			RGB9E5F,
+			BGRA8,
+			RGBA8,
+			RGBA8I,
+			RGBA8U,
+			RGBA8S,
+			RGBA16,
+			RGBA16I,
+			RGBA16U,
+			RGBA16F,
+			RGBA16S,
+			RGBA32I,
+			RGBA32U,
+			RGBA32F,
+			R5G6B5,
+			RGBA4,
+			RGB5A1,
+			RGB10A2,
+			RG11B10F,
 
-		UnknownDepth, // Depth formats below.
+			UnknownDepth, // Depth formats below.
 
-		D16,
-		D24,
-		D24S8,
-		D32,
-		D16F,
-		D24F,
-		D32F,
-		D0S8,
+			D16,
+			D24,
+			D24S8,
+			D32,
+			D16F,
+			D24F,
+			D32F,
+			D0S8,
 
-		Count
+			Count
+		};
 	};
 
-	enum class UniformType
+	struct UniformType
 	{
-		Int1, //!< Int, used for samplers only.
-		End,  //!< Reserved, do not use.
+		/// Uniform types:
+		enum Enum
+		{
+			Int1, //!< Int, used for samplers only.
+			End,  //!< Reserved, do not use.
 
-		Vec4, //!< 4 floats vector.
-		Mat3, //!< 3x3 matrix.
-		Mat4, //!< 4x4 matrix.
+			Vec4, //!< 4 floats vector.
+			Mat3, //!< 3x3 matrix.
+			Mat4, //!< 4x4 matrix.
 
-		Count
+			Count
+		};
 	};
 
-	enum class BackbufferRatio
+	struct BackbufferRatio
 	{
-		Equal,     //!< Equal to backbuffer.
-		Half,      //!< One half size of backbuffer.
-		Quarter,   //!< One quarter size of backbuffer.
-		Eighth,    //!< One eighth size of backbuffer.
-		Sixteenth, //!< One sixteenth size of backbuffer.
-		Double,    //!< Double size of backbuffer.
+		/// Backbuffer ratios:
+		enum Enum
+		{
+			Equal,     //!< Equal to backbuffer.
+			Half,      //!< One half size of backbuffer.
+			Quarter,   //!< One quarter size of backbuffer.
+			Eighth,    //!< One eighth size of backbuffer.
+			Sixteenth, //!< One sixteenth size of backbuffer.
+			Double,    //!< Double size of backbuffer.
 
-		Count
+			Count
+		};
 	};
 
-	enum class OcclusionQueryResult
+	struct OcclusionQueryResult
 	{
-		Invisible, //!< Query failed test.
-		Visible,   //!< Query passed test.
-		NoResult,  //!< Query result is not available yet.
+		/// Occlusion query results:
+		enum Enum
+		{
+			Invisible, //!< Query failed test.
+			Visible,   //!< Query passed test.
+			NoResult,  //!< Query result is not available yet.
 
-		Count
+			Count
+		};
 	};
 
-	enum class Topology
+	struct Topology
 	{
-		TriList,   //!< Triangle list.
-		TriStrip,  //!< Triangle strip.
-		LineList,  //!< Line list.
-		LineStrip, //!< Line strip.
-		PointList, //!< Point list.
+		/// Primitive topology:
+		enum Enum
+		{
+			TriList,   //!< Triangle list.
+			TriStrip,  //!< Triangle strip.
+			LineList,  //!< Line list.
+			LineStrip, //!< Line strip.
+			PointList, //!< Point list.
 
-		Count
+			Count
+		};
 	};
 
-	enum class ViewMode
+	struct ViewMode
 	{
-		Default,         //!< Default sort order.
-		Sequential,      //!< Sort in the same order in which submit calls were called.
-		DepthAscending,  //!< Sort draw call depth in ascending order.
-		DepthDescending, //!< Sort draw call depth in descending order.
+		/// View modes:
+		enum Enum
+		{
+			Default,         //!< Default sort order.
+			Sequential,      //!< Sort in the same order in which submit calls were called.
+			DepthAscending,  //!< Sort draw call depth in ascending order.
+			DepthDescending, //!< Sort draw call depth in descending order.
 
-		Count
+			Count
+		};
 	};
 
 	static const uint16_t kInvalidHandle = UINT16_MAX;
@@ -678,7 +720,7 @@ namespace mygfx
 			, TextureHandle _handle
 			, uint8_t _mip
 			, Access _access
-			, TextureFormat _format = TextureFormat::Count
+			, TextureFormat::Enum _format = TextureFormat::Enum::Count
 		);
 
 		/// Dispatch compute.

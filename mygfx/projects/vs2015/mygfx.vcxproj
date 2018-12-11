@@ -355,9 +355,12 @@
     <ClInclude Include="..\..\include\compat\msvc\stdbool.h" />
     <ClInclude Include="..\..\include\mygfx\defines.h" />
     <ClInclude Include="..\..\include\mygfx\mygfx.h" />
+    <ClInclude Include="..\..\include\mygfx\platform.h" />
     <ClInclude Include="..\..\src\bimg\bimg_p.h" />
     <ClInclude Include="..\..\src\bx\bx_p.h" />
     <ClInclude Include="..\..\src\mygfx\config.h" />
+    <ClInclude Include="..\..\src\mygfx\shader.h" />
+    <ClInclude Include="..\..\src\mygfx\vertexdecl.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\3rdparty\libsquish\LICENSE" />
