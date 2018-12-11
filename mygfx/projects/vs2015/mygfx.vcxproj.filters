@@ -745,6 +745,9 @@
     <ClInclude Include="..\..\include\mygfx\mygfx.h">
       <Filter>include\mygfx</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\config.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\bx\inline\allocator.inl">

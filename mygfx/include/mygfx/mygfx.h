@@ -240,7 +240,7 @@ namespace mygfx
 		MYGFX_HANDLE(DynamicVertexBufferHandle)
 		MYGFX_HANDLE(FrameBufferHandle)
 		MYGFX_HANDLE(IndexBufferHandle)
-		MYGFX_HANDLE(IndirectBufferHandle)
+		//MYGFX_HANDLE(IndirectBufferHandle)
 		MYGFX_HANDLE(OcclusionQueryHandle)
 		MYGFX_HANDLE(ProgramHandle)
 		MYGFX_HANDLE(ShaderHandle)
@@ -394,6 +394,7 @@ namespace mygfx
 		VertexDeclHandle decl;     //!< Vertex declaration handle.
 	};
 
+	/*
 	struct InstanceDataBuffer
 	{
 		uint8_t* data;             //!< Pointer to data.
@@ -403,6 +404,7 @@ namespace mygfx
 		uint16_t stride;           //!< Vertex buffer stride.
 		VertexBufferHandle handle; //!< Vertex buffer object handle.
 	};
+*/
 
 	struct TextureInfo
 	{
@@ -620,30 +622,6 @@ namespace mygfx
 			, uint32_t _numVertices
 		);
 
-		void setVertexCount(uint32_t _numVertices);
-
-		void setInstanceDataBuffer(const InstanceDataBuffer* _idb);
-
-		void setInstanceDataBuffer(
-			const InstanceDataBuffer* _idb
-			, uint32_t _start
-			, uint32_t _num
-		);
-
-		void setInstanceDataBuffer(
-			VertexBufferHandle _handle
-			, uint32_t _start
-			, uint32_t _num
-		);
-
-		void setInstanceDataBuffer(
-			DynamicVertexBufferHandle _handle
-			, uint32_t _start
-			, uint32_t _num
-		);
-
-		void setInstanceCount(uint32_t _numInstances);
-
 		void setTexture(
 			uint8_t _stage
 			, UniformHandle _sampler
@@ -666,16 +644,6 @@ namespace mygfx
 			ViewId _id
 			, ProgramHandle _program
 			, OcclusionQueryHandle _occlusionQuery
-			, uint32_t _depth = 0
-			, bool _preserveState = false
-		);
-
-		void submit(
-			ViewId _id
-			, ProgramHandle _program
-			, IndirectBufferHandle _indirectHandle
-			, uint16_t _start = 0
-			, uint16_t _num = 1
 			, uint32_t _depth = 0
 			, bool _preserveState = false
 		);
@@ -705,12 +673,6 @@ namespace mygfx
 			, Access _access
 		);
 
-		void setBuffer(
-			uint8_t _stage
-			, IndirectBufferHandle _handle
-			, Access _access
-		);
-
 		void setImage(
 			uint8_t _stage
 			, TextureHandle _handle
@@ -726,15 +688,6 @@ namespace mygfx
 			, uint32_t _numX = 1
 			, uint32_t _numY = 1
 			, uint32_t _numZ = 1
-			, uint8_t _flags = MYGFX_SUBMIT_EYE_FIRST
-		);
-
-		void dispatch(
-			ViewId _id
-			, ProgramHandle _handle
-			, IndirectBufferHandle _indirectHandle
-			, uint16_t _start = 0
-			, uint16_t _num = 1
 			, uint8_t _flags = MYGFX_SUBMIT_EYE_FIRST
 		);
 
