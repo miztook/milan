@@ -208,4 +208,79 @@ namespace stl = std;
 #	define MYGFX_RENDERER_OPENGL_NAME "OpenGL"
 #endif //
 
+namespace mygfx
+{
+	extern InternalData g_internalData;
+	extern PlatformData g_platformData;
+	extern bool g_platformDataChangedSinceReset;
+
+#if BGFX_CONFIG_MAX_DRAW_CALLS < (64<<10)
+	typedef uint16_t RenderItemCount;
+#else
+	typedef uint32_t RenderItemCount;
+#endif // BGFX_CONFIG_MAX_DRAW_CALLS < (64<<10)
+
+	struct Handle
+	{
+		enum Enum
+		{
+			Shader,
+			Texture,
+
+			Count
+		};
+
+		uint16_t type;
+		uint16_t idx;
+	};
+
+	inline Handle convert(ShaderHandle _handle)
+	{
+		Handle handle = { Handle::Shader, _handle.idx };
+		return handle;
+	}
+
+	inline Handle convert(TextureHandle _handle)
+	{
+		Handle handle = { Handle::Texture, _handle.idx };
+		return handle;
+	}
+
+	inline bool isValid(const VertexDecl& _decl)
+	{
+		return 0 != _decl.m_stride;
+	}
+
+	struct Condition
+	{
+		enum Enum
+		{
+			LessEqual,
+			GreaterEqual,
+		};
+	};
+
+	bool windowsVersionIs(Condition::Enum _op, uint32_t _version);
+
+	constexpr bool isShaderType(uint32_t _magic, char _type)
+	{
+		return uint32_t(_type) == (_magic & BX_MAKEFOURCC(0xff, 0, 0, 0));
+	}
+
+	inline bool isShaderBin(uint32_t _magic)
+	{
+		return BX_MAKEFOURCC(0, 'S', 'H', 0) == (_magic & BX_MAKEFOURCC(0, 0xff, 0xff, 0))
+			&& (isShaderType(_magic, 'C') || isShaderType(_magic, 'F') || isShaderType(_magic, 'V'))
+			;
+	}
+
+	inline bool isShaderVerLess(uint32_t _magic, uint8_t _version)
+	{
+		return (_magic & BX_MAKEFOURCC(0, 0, 0, 0xff)) < BX_MAKEFOURCC(0, 0, 0, _version);
+	}
+
+	const char* getShaderTypeName(uint32_t _magic);
+
+}
+
 #endif

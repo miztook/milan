@@ -17,6 +17,7 @@ namespace mygfx
 
 			Count
 		};
+	};
 
 		/// Render frame.
 		///
@@ -47,13 +48,7 @@ namespace mygfx
 		/// @attention It's expected you understand some bgfx internals before you
 		///   use this call.
 		const InternalData* getInternalData();
-	};
-
-
-}
-
-
-
+};
 
 
 #endif
