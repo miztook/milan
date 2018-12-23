@@ -359,6 +359,7 @@
     <ClInclude Include="..\..\src\bimg\bimg_p.h" />
     <ClInclude Include="..\..\src\bx\bx_p.h" />
     <ClInclude Include="..\..\src\mygfx\config.h" />
+    <ClInclude Include="..\..\src\mygfx\context.h" />
     <ClInclude Include="..\..\src\mygfx\shader.h" />
     <ClInclude Include="..\..\src\mygfx\vertexdecl.h" />
   </ItemGroup>

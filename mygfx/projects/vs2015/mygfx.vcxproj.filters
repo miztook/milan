@@ -757,6 +757,9 @@
     <ClInclude Include="..\..\src\mygfx\vertexdecl.h">
       <Filter>src\mygfx</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\context.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\bx\inline\allocator.inl">

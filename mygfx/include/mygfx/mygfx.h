@@ -262,6 +262,41 @@ namespace mygfx
 		};
 	};
 
+	struct TopologyConvert
+	{
+		enum Enum
+		{
+			TriListFlipWinding,  //!< Flip winding order of triangle list.
+			TriStripFlipWinding, //!< Flip winding order of trinagle strip.
+			TriListToLineList,   //!< Convert triangle list to line list.
+			TriStripToTriList,   //!< Convert triangle strip to triangle list.
+			LineStripToLineList, //!< Convert line strip to line list.
+
+			Count
+		};
+	};
+
+	struct TopologySort
+	{
+		enum Enum
+		{
+			DirectionFrontToBackMin, //!<
+			DirectionFrontToBackAvg, //!<
+			DirectionFrontToBackMax, //!<
+			DirectionBackToFrontMin, //!<
+			DirectionBackToFrontAvg, //!<
+			DirectionBackToFrontMax, //!<
+			DistanceFrontToBackMin,  //!<
+			DistanceFrontToBackAvg,  //!<
+			DistanceFrontToBackMax,  //!<
+			DistanceBackToFrontMin,  //!<
+			DistanceBackToFrontAvg,  //!<
+			DistanceBackToFrontMax,  //!<
+
+			Count
+		};
+	};
+
 	struct ViewMode
 	{
 		/// View modes:
@@ -325,7 +360,7 @@ namespace mygfx
 	{
 		Resolution();
 
-		TextureFormat format; //!< Backbuffer format.
+		TextureFormat::Enum format; //!< Backbuffer format.
 		uint32_t width;             //!< Backbuffer width.
 		uint32_t height;            //!< Backbuffer height.
 		uint32_t reset;	            //!< Reset parameters.
@@ -359,6 +394,8 @@ namespace mygfx
 
 		CallbackI* callback;
 	};
+
+	typedef void(*ReleaseFn)(void* _ptr, void* _userData);
 
 	struct Memory
 	{
@@ -450,7 +487,7 @@ namespace mygfx
 
 	struct TextureInfo
 	{
-		TextureFormat format; //!< Texture format.
+		TextureFormat::Enum format; //!< Texture format.
 		uint32_t storageSize;       //!< Total amount of bytes required to store texture.
 		uint16_t width;             //!< Texture width.
 		uint16_t height;            //!< Texture height.
@@ -464,7 +501,7 @@ namespace mygfx
 	struct UniformInfo
 	{
 		char name[256];         //!< Uniform name.
-		UniformType type; //!< Uniform type.
+		UniformType::Enum type; //!< Uniform type.
 		uint16_t num;           //!< Number of elements in array.
 	};
 
@@ -765,6 +802,779 @@ namespace mygfx
 			, uint16_t _depth = UINT16_MAX
 		);
 	};
+
+	struct VertexDecl 
+	{
+		VertexDecl();
+
+		VertexDecl& begin(RendererType::Enum _renderer = RendererType::Noop);
+
+		void end();
+
+		VertexDecl& add(
+			Attrib::Enum _attrib
+			, uint8_t _num
+			, AttribType::Enum _type
+			, bool _normalized = false
+			, bool _asInt = false
+		);
+
+		VertexDecl& skip(uint8_t _num);
+
+		void decode(
+			Attrib::Enum _attrib
+			, uint8_t& _num
+			, AttribType::Enum& _type
+			, bool& _normalized
+			, bool& _asInt
+		) const;
+
+		bool has(Attrib::Enum _attrib) const { return UINT16_MAX != m_attributes[_attrib]; }
+
+		/// Returns relative attribute offset from the vertex.
+		uint16_t getOffset(Attrib::Enum _attrib) const { return m_offset[_attrib]; }
+
+		/// Returns vertex stride.
+		uint16_t getStride() const { return m_stride; }
+
+		/// Returns size of vertex buffer for number of vertices.
+		uint32_t getSize(uint32_t _num) const { return _num*m_stride; }
+
+		uint32_t m_hash;
+		uint16_t m_stride;
+		uint16_t m_offset[Attrib::Count];
+		uint16_t m_attributes[Attrib::Count];
+	};
+
+	void vertexPack(
+		const float _input[4]
+		, bool _inputNormalized
+		, Attrib::Enum _attr
+		, const VertexDecl& _decl
+		, void* _data
+		, uint32_t _index = 0
+	);
+
+	void vertexUnpack(
+		float _output[4]
+		, Attrib::Enum _attr
+		, const VertexDecl& _decl
+		, const void* _data
+		, uint32_t _index = 0
+	);
+
+	void vertexConvert(
+		const VertexDecl& _destDecl
+		, void* _destData
+		, const VertexDecl& _srcDecl
+		, const void* _srcData
+		, uint32_t _num = 1
+	);
+
+	uint16_t weldVertices(
+		uint16_t* _output
+		, const VertexDecl& _decl
+		, const void* _data
+		, uint16_t _num
+		, float _epsilon = 0.001f
+	);
+
+	uint32_t topologyConvert(
+		TopologyConvert::Enum _conversion
+		, void* _dst
+		, uint32_t _dstSize
+		, const void* _indices
+		, uint32_t _numIndices
+		, bool _index32
+	);
+
+	void topologySortTriList(
+		TopologySort::Enum _sort
+		, void* _dst
+		, uint32_t _dstSize
+		, const float _dir[3]
+		, const float _pos[3]
+		, const void* _vertices
+		, uint32_t _stride
+		, const void* _indices
+		, uint32_t _numIndices
+		, bool _index32
+	);
+
+	uint8_t getSupportedRenderers(
+		uint8_t _max = 0
+		, RendererType::Enum* _enum = NULL
+	);
+
+	const char* getRendererName(RendererType::Enum _type);
+
+	//
+	bool init(const Init& _init = {});
+
+	void shutdown();
+	
+	void reset(
+		uint32_t _width
+		, uint32_t _height
+		, uint32_t _flags = MYGFX_RESET_NONE
+		, TextureFormat::Enum _format = TextureFormat::Count
+	);
+
+	Encoder* begin(bool _forThread = false);
+
+	void end(Encoder* _encoder);
+
+	uint32_t frame(bool _capture = false);
+
+	RendererType::Enum getRendererType();
+
+	const Caps* getCaps();
+
+	const Stats* getStats();
+
+	const Memory* alloc(uint32_t _size);
+
+	const Memory* copy(
+		const void* _data
+		, uint32_t _size
+	);
+
+	const Memory* makeRef(
+		const void* _data
+		, uint32_t _size
+		, ReleaseFn _releaseFn = NULL
+		, void* _userData = NULL
+	);
+
+	void setDebug(uint32_t _debug);
+
+	void dbgTextClear(
+		uint8_t _attr = 0
+		, bool _small = false
+	);
+
+	void dbgTextPrintf(
+		uint16_t _x
+		, uint16_t _y
+		, uint8_t _attr
+		, const char* _format
+		, ...
+	);
+
+	void dbgTextPrintfVargs(
+		uint16_t _x
+		, uint16_t _y
+		, uint8_t _attr
+		, const char* _format
+		, va_list _argList
+	);
+
+	void dbgTextImage(
+		uint16_t _x
+		, uint16_t _y
+		, uint16_t _width
+		, uint16_t _height
+		, const void* _data
+		, uint16_t _pitch
+	);
+
+	//
+	IndexBufferHandle createIndexBuffer(
+		const Memory* _mem
+		, uint16_t _flags = MYGFX_BUFFER_NONE
+	);
+
+	void destroy(IndexBufferHandle _handle);
+
+	VertexBufferHandle createVertexBuffer(
+		const Memory* _mem
+		, const VertexDecl& _decl
+		, uint16_t _flags = MYGFX_BUFFER_NONE
+	);
+
+	void destroy(VertexBufferHandle _handle);
+
+	DynamicIndexBufferHandle createDynamicIndexBuffer(
+		uint32_t _num
+		, uint16_t _flags = MYGFX_BUFFER_NONE
+	);
+
+	DynamicIndexBufferHandle createDynamicIndexBuffer(
+		const Memory* _mem
+		, uint16_t _flags = MYGFX_BUFFER_NONE
+	);
+
+	void update(
+		DynamicIndexBufferHandle _handle
+		, uint32_t _startIndex
+		, const Memory* _mem
+	);
+
+	void destroy(DynamicIndexBufferHandle _handle);
+
+	DynamicVertexBufferHandle createDynamicVertexBuffer(
+		uint32_t _num
+		, const VertexDecl& _decl
+		, uint16_t _flags = MYGFX_BUFFER_NONE
+	);
+
+	DynamicVertexBufferHandle createDynamicVertexBuffer(
+		const Memory* _mem
+		, const VertexDecl& _decl
+		, uint16_t _flags = MYGFX_BUFFER_NONE
+	);
+
+	void update(
+		DynamicVertexBufferHandle _handle
+		, uint32_t _startVertex
+		, const Memory* _mem
+	);
+
+	void destroy(DynamicVertexBufferHandle _handle);
+
+	//
+	uint32_t getAvailTransientIndexBuffer(uint32_t _num);
+
+	uint32_t getAvailTransientVertexBuffer(
+		uint32_t _num
+		, const VertexDecl& _decl
+	);
+
+	void allocTransientIndexBuffer(
+		TransientIndexBuffer* _tib
+		, uint32_t _num
+	);
+
+	void allocTransientVertexBuffer(
+		TransientVertexBuffer* _tvb
+		, uint32_t _num
+		, const VertexDecl& _decl
+	);
+
+	bool allocTransientBuffers(
+		TransientVertexBuffer* _tvb
+		, const VertexDecl& _decl
+		, uint32_t _numVertices
+		, TransientIndexBuffer* _tib
+		, uint32_t _numIndices
+	);
+
+	//
+	ShaderHandle createShader(const Memory* _mem);
+
+	uint16_t getShaderUniforms(
+		ShaderHandle _handle
+		, UniformHandle* _uniforms = NULL
+		, uint16_t _max = 0
+	);
+
+	void setName(
+		ShaderHandle _handle
+		, const char* _name
+		, int32_t _len = INT32_MAX
+	);
+
+	void destroy(ShaderHandle _handle);
+
+	//
+	ProgramHandle createProgram(
+		ShaderHandle _vsh
+		, ShaderHandle _fsh
+		, bool _destroyShaders = false
+	);
+
+	ProgramHandle createProgram(
+		ShaderHandle _csh
+		, bool _destroyShader = false
+	);
+
+	void destroy(ProgramHandle _handle);
+
+	bool isTextureValid(
+		uint16_t _depth
+		, bool _cubeMap
+		, uint16_t _numLayers
+		, TextureFormat::Enum _format
+		, uint64_t _flags
+	);
+
+	void calcTextureSize(
+		TextureInfo& _info
+		, uint16_t _width
+		, uint16_t _height
+		, uint16_t _depth
+		, bool _cubeMap
+		, bool _hasMips
+		, uint16_t _numLayers
+		, TextureFormat::Enum _format
+	);
+
+	TextureHandle createTexture(
+		const Memory* _mem
+		, uint64_t _flags = MYGFX_TEXTURE_NONE | MYGFX_SAMPLER_NONE
+		, uint8_t _skip = 0
+		, TextureInfo* _info = NULL
+	);
+
+	TextureHandle createTexture2D(
+		uint16_t _width
+		, uint16_t _height
+		, bool     _hasMips
+		, uint16_t _numLayers
+		, TextureFormat::Enum _format
+		, uint64_t _flags = MYGFX_TEXTURE_NONE | MYGFX_SAMPLER_NONE
+		, const Memory* _mem = NULL
+	);
+
+	TextureHandle createTexture2D(
+		BackbufferRatio::Enum _ratio
+		, bool _hasMips
+		, uint16_t _numLayers
+		, TextureFormat::Enum _format
+		, uint64_t _flags = MYGFX_TEXTURE_NONE | MYGFX_SAMPLER_NONE
+	);
+
+	TextureHandle createTexture3D(
+		uint16_t _width
+		, uint16_t _height
+		, uint16_t _depth
+		, bool _hasMips
+		, TextureFormat::Enum _format
+		, uint64_t _flags = MYGFX_TEXTURE_NONE | MYGFX_SAMPLER_NONE
+		, const Memory* _mem = NULL
+	);
+
+	TextureHandle createTextureCube(
+		uint16_t _size
+		, bool _hasMips
+		, uint16_t _numLayers
+		, TextureFormat::Enum _format
+		, uint64_t _flags = MYGFX_TEXTURE_NONE | MYGFX_SAMPLER_NONE
+		, const Memory* _mem = NULL
+	);
+
+	void updateTexture2D(
+		TextureHandle _handle
+		, uint16_t _layer
+		, uint8_t _mip
+		, uint16_t _x
+		, uint16_t _y
+		, uint16_t _width
+		, uint16_t _height
+		, const Memory* _mem
+		, uint16_t _pitch = UINT16_MAX
+	);
+
+	void updateTexture3D(
+		TextureHandle _handle
+		, uint8_t _mip
+		, uint16_t _x
+		, uint16_t _y
+		, uint16_t _z
+		, uint16_t _width
+		, uint16_t _height
+		, uint16_t _depth
+		, const Memory* _mem
+	);
+
+	void updateTextureCube(
+		TextureHandle _handle
+		, uint16_t _layer
+		, uint8_t _side
+		, uint8_t _mip
+		, uint16_t _x
+		, uint16_t _y
+		, uint16_t _width
+		, uint16_t _height
+		, const Memory* _mem
+		, uint16_t _pitch = UINT16_MAX
+	);
+
+	uint32_t readTexture(
+		TextureHandle _handle
+		, void* _data
+		, uint8_t _mip = 0
+	);
+
+	void setName(
+		TextureHandle _handle
+		, const char* _name
+		, int32_t _len = INT32_MAX
+	);
+
+	void* getDirectAccessPtr(TextureHandle _handle);
+
+	void destroy(TextureHandle _handle);
+
+	//
+	FrameBufferHandle createFrameBuffer(
+		uint16_t _width
+		, uint16_t _height
+		, TextureFormat::Enum _format
+		, uint64_t _textureFlags = MYGFX_SAMPLER_U_CLAMP | MYGFX_SAMPLER_V_CLAMP
+	);
+
+	FrameBufferHandle createFrameBuffer(
+		BackbufferRatio::Enum _ratio
+		, TextureFormat::Enum _format
+		, uint64_t _textureFlags = MYGFX_SAMPLER_U_CLAMP | MYGFX_SAMPLER_V_CLAMP
+	);
+
+	FrameBufferHandle createFrameBuffer(
+		uint8_t _num
+		, const TextureHandle* _handles
+		, bool _destroyTextures = false
+	);
+
+	FrameBufferHandle createFrameBuffer(
+		uint8_t _num
+		, const Attachment* _attachment
+		, bool _destroyTextures = false
+	);
+
+	FrameBufferHandle createFrameBuffer(
+		void* _nwh
+		, uint16_t _width
+		, uint16_t _height
+		, TextureFormat::Enum _format = TextureFormat::Count
+		, TextureFormat::Enum _depthFormat = TextureFormat::Count
+	);
+
+	TextureHandle getTexture(
+		FrameBufferHandle _handle
+		, uint8_t _attachment = 0
+	);
+
+	void destroy(FrameBufferHandle _handle);
+
+	UniformHandle createUniform(
+		const char* _name
+		, UniformType::Enum _type
+		, uint16_t _num = 1
+	);
+
+	void getUniformInfo(
+		UniformHandle _handle
+		, UniformInfo& _info
+	);
+
+	void destroy(UniformHandle _handle);
+
+	//
+	OcclusionQueryHandle createOcclusionQuery();
+
+	OcclusionQueryResult::Enum getResult(
+		OcclusionQueryHandle _handle
+		, int32_t* _result = NULL
+	);
+
+	void destroy(OcclusionQueryHandle _handle);
+
+	void setPaletteColor(
+		uint8_t _index
+		, uint32_t _rgba
+	);
+
+	void setPaletteColor(
+		uint8_t _index
+		, float _r
+		, float _g
+		, float _b
+		, float _a
+	);
+
+	void setPaletteColor(
+		uint8_t _index
+		, const float _rgba[4]
+	);
+
+	void setViewName(
+		ViewId _id
+		, const char* _name
+	);
+
+	void setViewRect(
+		ViewId _id
+		, uint16_t _x
+		, uint16_t _y
+		, uint16_t _width
+		, uint16_t _height
+	);
+
+	void setViewRect(
+		ViewId _id
+		, uint16_t _x
+		, uint16_t _y
+		, BackbufferRatio::Enum _ratio
+	);
+
+	void setViewScissor(
+		ViewId _id
+		, uint16_t _x = 0
+		, uint16_t _y = 0
+		, uint16_t _width = 0
+		, uint16_t _height = 0
+	);
+
+	void setViewClear(
+		ViewId _id
+		, uint16_t _flags
+		, uint32_t _rgba = 0x000000ff
+		, float _depth = 1.0f
+		, uint8_t _stencil = 0
+	);
+
+	void setViewClear(
+		ViewId _id
+		, uint16_t _flags
+		, float _depth
+		, uint8_t _stencil
+		, uint8_t _0 = UINT8_MAX
+		, uint8_t _1 = UINT8_MAX
+		, uint8_t _2 = UINT8_MAX
+		, uint8_t _3 = UINT8_MAX
+		, uint8_t _4 = UINT8_MAX
+		, uint8_t _5 = UINT8_MAX
+		, uint8_t _6 = UINT8_MAX
+		, uint8_t _7 = UINT8_MAX
+	);
+
+	void setViewMode(
+		ViewId _id
+		, ViewMode::Enum _mode = ViewMode::Default
+	);
+
+	void setViewFrameBuffer(
+		ViewId _id
+		, FrameBufferHandle _handle
+	);
+
+	void setViewTransform(
+		ViewId _id
+		, const void* _view
+		, const void* _projL
+		, uint8_t _flags = MYGFX_VIEW_STEREO
+		, const void* _projR = NULL
+	);
+
+	void setViewOrder(
+		ViewId _id = 0
+		, uint16_t _num = UINT16_MAX
+		, const ViewId* _remap = NULL
+	);
+
+	void resetView(ViewId _id);
+
+	void setMarker(const char* _marker);
+
+	void setState(
+		uint64_t _state
+		, uint32_t _rgba = 0
+	);
+
+	void setCondition(
+		OcclusionQueryHandle _handle
+		, bool _visible
+	);
+
+	void setStencil(
+		uint32_t _fstencil
+		, uint32_t _bstencil = MYGFX_STENCIL_NONE
+	);
+
+	uint16_t setScissor(
+		uint16_t _x
+		, uint16_t _y
+		, uint16_t _width
+		, uint16_t _height
+	);
+
+	void setScissor(uint16_t _cache = UINT16_MAX);
+
+	uint32_t setTransform(
+		const void* _mtx
+		, uint16_t _num = 1
+	);
+
+	uint32_t allocTransform(
+		Transform* _transform
+		, uint16_t _num
+	);
+
+	void setTransform(
+		uint32_t _cache
+		, uint16_t _num = 1
+	);
+
+	void setUniform(
+		UniformHandle _handle
+		, const void* _value
+		, uint16_t _num = 1
+	);
+
+	void setIndexBuffer(IndexBufferHandle _handle);
+
+	void setIndexBuffer(
+		IndexBufferHandle _handle
+		, uint32_t _firstIndex
+		, uint32_t _numIndices
+	);
+
+	void setIndexBuffer(DynamicIndexBufferHandle _handle);
+
+	void setIndexBuffer(
+		DynamicIndexBufferHandle _handle
+		, uint32_t _firstIndex
+		, uint32_t _numIndices
+	);
+
+	void setIndexBuffer(const TransientIndexBuffer* _tib);
+
+	void setIndexBuffer(
+		const TransientIndexBuffer* _tib
+		, uint32_t _firstIndex
+		, uint32_t _numIndices
+	);
+
+	void setVertexBuffer(
+		uint8_t _stream
+		, VertexBufferHandle _handle
+	);
+
+	void setVertexBuffer(
+		uint8_t _stream
+		, VertexBufferHandle _handle
+		, uint32_t _startVertex
+		, uint32_t _numVertices
+	);
+
+	void setVertexBuffer(
+		uint8_t _stream
+		, DynamicVertexBufferHandle _handle
+	);
+
+	void setVertexBuffer(
+		uint8_t _stream
+		, DynamicVertexBufferHandle _handle
+		, uint32_t _startVertex
+		, uint32_t _numVertices
+	);
+
+	void setVertexBuffer(
+		uint8_t _stream
+		, const TransientVertexBuffer* _tvb
+	);
+
+	void setVertexBuffer(
+		uint8_t _stream
+		, const TransientVertexBuffer* _tvb
+		, uint32_t _startVertex
+		, uint32_t _numVertices
+	);
+
+	void setVertexCount(uint32_t _numVertices);
+
+	//
+	void setTexture(
+		uint8_t _stage
+		, UniformHandle _sampler
+		, TextureHandle _handle
+		, uint32_t _flags = UINT32_MAX
+	);
+
+	void touch(ViewId _id);
+
+	void submit(
+		ViewId _id
+		, ProgramHandle _program
+		, uint32_t _depth = 0
+		, bool _preserveState = false
+	);
+
+	void submit(
+		ViewId _id
+		, ProgramHandle _program
+		, OcclusionQueryHandle _occlusionQuery
+		, uint32_t _depth = 0
+		, bool _preserveState = false
+	);
+
+	void setBuffer(
+		uint8_t _stage
+		, IndexBufferHandle _handle
+		, Access::Enum _access
+	);
+
+	void setBuffer(
+		uint8_t _stage
+		, VertexBufferHandle _handle
+		, Access::Enum _access
+	);
+
+	void setBuffer(
+		uint8_t _stage
+		, DynamicIndexBufferHandle _handle
+		, Access::Enum _access
+	);
+
+	void setBuffer(
+		uint8_t _stage
+		, DynamicVertexBufferHandle _handle
+		, Access::Enum _access
+	);
+
+	void setImage(
+		uint8_t _stage
+		, TextureHandle _handle
+		, uint8_t _mip
+		, Access::Enum _access
+		, TextureFormat::Enum _format = TextureFormat::Count
+	);
+
+	void dispatch(
+		ViewId _id
+		, ProgramHandle _handle
+		, uint32_t _numX = 1
+		, uint32_t _numY = 1
+		, uint32_t _numZ = 1
+		, uint8_t _flags = MYGFX_SUBMIT_EYE_FIRST
+	);
+
+	void discard();
+
+	void blit(
+		ViewId _id
+		, TextureHandle _dst
+		, uint16_t _dstX
+		, uint16_t _dstY
+		, TextureHandle _src
+		, uint16_t _srcX = 0
+		, uint16_t _srcY = 0
+		, uint16_t _width = UINT16_MAX
+		, uint16_t _height = UINT16_MAX
+	);
+
+	void blit(
+		ViewId _id
+		, TextureHandle _dst
+		, uint8_t _dstMip
+		, uint16_t _dstX
+		, uint16_t _dstY
+		, uint16_t _dstZ
+		, TextureHandle _src
+		, uint8_t _srcMip = 0
+		, uint16_t _srcX = 0
+		, uint16_t _srcY = 0
+		, uint16_t _srcZ = 0
+		, uint16_t _width = UINT16_MAX
+		, uint16_t _height = UINT16_MAX
+		, uint16_t _depth = UINT16_MAX
+	);
+
+	void requestScreenShot(
+		FrameBufferHandle _handle
+		, const char* _filePath
+	);
 }
 
 #endif
