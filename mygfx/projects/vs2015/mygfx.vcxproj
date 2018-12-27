@@ -358,9 +358,16 @@
     <ClInclude Include="..\..\include\mygfx\platform.h" />
     <ClInclude Include="..\..\src\bimg\bimg_p.h" />
     <ClInclude Include="..\..\src\bx\bx_p.h" />
+    <ClInclude Include="..\..\src\mygfx\base.h" />
+    <ClInclude Include="..\..\src\mygfx\CommandBuffer.h" />
     <ClInclude Include="..\..\src\mygfx\config.h" />
     <ClInclude Include="..\..\src\mygfx\context.h" />
+    <ClInclude Include="..\..\src\mygfx\Encoder.h" />
+    <ClInclude Include="..\..\src\mygfx\Frame.h" />
+    <ClInclude Include="..\..\src\mygfx\NonLocalAllocator.h" />
+    <ClInclude Include="..\..\src\mygfx\RendererContextI.h" />
     <ClInclude Include="..\..\src\mygfx\shader.h" />
+    <ClInclude Include="..\..\src\mygfx\Uniform.h" />
     <ClInclude Include="..\..\src\mygfx\vertexdecl.h" />
   </ItemGroup>
   <ItemGroup>

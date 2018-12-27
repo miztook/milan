@@ -760,6 +760,27 @@
     <ClInclude Include="..\..\src\mygfx\context.h">
       <Filter>src\mygfx</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\NonLocalAllocator.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\base.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\Encoder.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\Frame.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\RendererContextI.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\CommandBuffer.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\Uniform.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\bx\inline\allocator.inl">

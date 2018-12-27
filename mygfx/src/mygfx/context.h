@@ -1,11 +1,15 @@
 #ifndef CONTEXT_H_HEADER_GUARD
 #define CONTEXT_H_HEADER_GUARD
 
-#include "mygfx_p.h"
-#include "config.h"
+#include "base.h"
+#include "NonLocalAllocator.h"
+#include "Frame.h"
+#include "Encoder.h"
 
 namespace mygfx
 {
+	struct RendererContextI;
+
 	struct Context
 	{
 		Context()
