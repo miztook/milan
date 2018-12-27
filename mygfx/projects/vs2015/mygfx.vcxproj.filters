@@ -751,15 +751,6 @@
     <ClInclude Include="..\..\include\mygfx\platform.h">
       <Filter>include\mygfx</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\mygfx\shader.h">
-      <Filter>src\mygfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mygfx\vertexdecl.h">
-      <Filter>src\mygfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\mygfx\context.h">
-      <Filter>src\mygfx</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\mygfx\NonLocalAllocator.h">
       <Filter>src\mygfx</Filter>
     </ClInclude>
@@ -779,6 +770,15 @@
       <Filter>src\mygfx</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mygfx\Uniform.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\Context.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\Shader.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\Vertexdecl.h">
       <Filter>src\mygfx</Filter>
     </ClInclude>
   </ItemGroup>

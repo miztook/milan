@@ -1,6 +1,8 @@
 #pragma once
 
 #include "base.h"
+#include "CommandBuffer.h"
+#include "Uniform.h"
 
 namespace mygfx
 {

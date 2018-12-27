@@ -6,6 +6,7 @@
 namespace mygfx
 {
 	struct Frame;
+	struct UniformBuffer;
 
 	struct BX_NO_VTABLE RendererContextI
 	{

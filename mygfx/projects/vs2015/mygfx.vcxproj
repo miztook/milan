@@ -361,14 +361,14 @@
     <ClInclude Include="..\..\src\mygfx\base.h" />
     <ClInclude Include="..\..\src\mygfx\CommandBuffer.h" />
     <ClInclude Include="..\..\src\mygfx\config.h" />
-    <ClInclude Include="..\..\src\mygfx\context.h" />
+    <ClInclude Include="..\..\src\mygfx\Context.h" />
     <ClInclude Include="..\..\src\mygfx\Encoder.h" />
     <ClInclude Include="..\..\src\mygfx\Frame.h" />
     <ClInclude Include="..\..\src\mygfx\NonLocalAllocator.h" />
     <ClInclude Include="..\..\src\mygfx\RendererContextI.h" />
-    <ClInclude Include="..\..\src\mygfx\shader.h" />
+    <ClInclude Include="..\..\src\mygfx\Shader.h" />
     <ClInclude Include="..\..\src\mygfx\Uniform.h" />
-    <ClInclude Include="..\..\src\mygfx\vertexdecl.h" />
+    <ClInclude Include="..\..\src\mygfx\Vertexdecl.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\3rdparty\libsquish\LICENSE" />

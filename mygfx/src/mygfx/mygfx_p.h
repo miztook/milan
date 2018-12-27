@@ -33,11 +33,11 @@
 #include "shader.h"
 #include "vertexdecl.h"
 
-#include "CommandBuffer.h"
-#include "Uniform.h"
-#include "context.h"
-#include "Encoder.h"
-#include "Frame.h"
+//#include "CommandBuffer.h"
+//#include "Uniform.h"
+//#include "Context.h"
+//#include "Encoder.h"
+//#include "Frame.h"
 #include "RendererContextI.h"
 
 #endif
