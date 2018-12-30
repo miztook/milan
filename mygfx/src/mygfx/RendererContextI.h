@@ -1,12 +1,12 @@
 #pragma once
 
-#include "mygfx/mygfx.h"
-#include "config.h"
+#include "Base.h"
+#include "Structs.h"
 
 namespace mygfx
 {
 	struct Frame;
-	struct UniformBuffer;
+	class UniformBuffer;
 
 	struct BX_NO_VTABLE RendererContextI
 	{

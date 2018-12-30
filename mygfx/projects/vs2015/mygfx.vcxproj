@@ -91,7 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty;../../3rdparty/iqa/include;../../3rdparty/nvtt;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;_HAS_EXCEPTIONS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;_HAS_EXCEPTIONS=0;MYGFX_CONFIG_MULTITHREADED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -100,7 +100,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;_HAS_EXCEPTIONS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;_HAS_EXCEPTIONS=0;MYGFX_CONFIG_MULTITHREADED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty;../../3rdparty/iqa/include;../../3rdparty/nvtt;</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -367,6 +367,7 @@
     <ClInclude Include="..\..\src\mygfx\NonLocalAllocator.h" />
     <ClInclude Include="..\..\src\mygfx\RendererContextI.h" />
     <ClInclude Include="..\..\src\mygfx\Shader.h" />
+    <ClInclude Include="..\..\src\mygfx\Structs.h" />
     <ClInclude Include="..\..\src\mygfx\Uniform.h" />
     <ClInclude Include="..\..\src\mygfx\Vertexdecl.h" />
   </ItemGroup>

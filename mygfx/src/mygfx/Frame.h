@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base.h"
+#include "Structs.h"
 #include "CommandBuffer.h"
 #include "Uniform.h"
 
@@ -94,6 +95,90 @@ namespace mygfx
 		FrameBufferHandle m_fbh;
 		uint8_t m_mode;
 		uint8_t m_flags;
+	};
+
+	struct MatrixCache
+	{
+		MatrixCache()
+			: m_num(1)
+		{
+			m_cache[0].setIdentity();
+		}
+
+		void reset()
+		{
+			m_num = 1;
+		}
+
+		uint32_t reserve(uint16_t* _num)
+		{
+			uint32_t num = *_num;
+			uint32_t first = bx::atomicFetchAndAddsat<uint32_t>(&m_num, num, MYGFX_CONFIG_MAX_MATRIX_CACHE - 1);
+			BX_WARN(first + num < MYGFX_CONFIG_MAX_MATRIX_CACHE, "Matrix cache overflow. %d (max: %d)", first + num, MYGFX_CONFIG_MAX_MATRIX_CACHE);
+			num = bx::min(num, MYGFX_CONFIG_MAX_MATRIX_CACHE - 1 - first);
+			*_num = (uint16_t)num;
+			return first;
+		}
+
+		uint32_t add(const void* _mtx, uint16_t _num)
+		{
+			if (NULL != _mtx)
+			{
+				uint32_t first = reserve(&_num);
+				bx::memCopy(&m_cache[first], _mtx, sizeof(Matrix4)*_num);
+				return first;
+			}
+
+			return 0;
+		}
+
+		float* toPtr(uint32_t _cacheIdx)
+		{
+			BX_CHECK(_cacheIdx < MYGFX_CONFIG_MAX_MATRIX_CACHE, "Matrix cache out of bounds index %d (max: %d)"
+				, _cacheIdx
+				, MYGFX_CONFIG_MAX_MATRIX_CACHE
+			);
+			return m_cache[_cacheIdx].un.val;
+		}
+
+		uint32_t fromPtr(const void* _ptr) const
+		{
+			return uint32_t((const Matrix4*)_ptr - m_cache);
+		}
+
+		Matrix4 m_cache[MYGFX_CONFIG_MAX_MATRIX_CACHE];
+		uint32_t m_num;
+	};
+
+	struct RectCache
+	{
+		RectCache()
+			: m_num(0)
+		{
+		}
+
+		void reset()
+		{
+			m_num = 0;
+		}
+
+		uint32_t add(uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height)
+		{
+			const uint32_t first = bx::atomicFetchAndAddsat<uint32_t>(&m_num, 1, MYGFX_CONFIG_MAX_RECT_CACHE - 1);
+			BX_CHECK(first + 1 < MYGFX_CONFIG_MAX_RECT_CACHE, "Rect cache overflow. %d (max: %d)", first, MYGFX_CONFIG_MAX_RECT_CACHE);
+
+			Rect& rect = m_cache[first];
+
+			rect.m_x = _x;
+			rect.m_y = _y;
+			rect.m_width = _width;
+			rect.m_height = _height;
+
+			return first;
+		}
+
+		Rect m_cache[MYGFX_CONFIG_MAX_RECT_CACHE];
+		uint32_t m_num;
 	};
 
 	struct FrameCache
@@ -299,38 +384,6 @@ namespace mygfx
 			m_freeUniform.reset();
 		}
 
-		ViewId m_viewRemap[MYGFX_CONFIG_MAX_VIEWS];
-		float m_colorPalette[MYGFX_CONFIG_MAX_COLOR_PALETTE][4];
-
-		View m_view[MYGFX_CONFIG_MAX_VIEWS];
-
-		int32_t m_occlusion[MYGFX_CONFIG_MAX_OCCLUSION_QUERIES];
-
-		uint64_t m_sortKeys[MYGFX_CONFIG_MAX_DRAW_CALLS + 1];
-		RenderItemCount m_sortValues[MYGFX_CONFIG_MAX_DRAW_CALLS + 1];
-		RenderItem m_renderItem[MYGFX_CONFIG_MAX_DRAW_CALLS + 1];
-		RenderBind m_renderItemBind[MYGFX_CONFIG_MAX_DRAW_CALLS + 1];
-
-		uint32_t m_blitKeys[MYGFX_CONFIG_MAX_BLIT_ITEMS + 1];
-		BlitItem m_blitItem[MYGFX_CONFIG_MAX_BLIT_ITEMS + 1];
-
-		FrameCache m_frameCache;
-		UniformBuffer** m_uniformBuffer;
-
-		uint32_t m_numRenderItems;
-		uint16_t m_numBlitItems;
-
-		uint32_t m_iboffset;
-		uint32_t m_vboffset;
-		TransientIndexBuffer* m_transientIb;
-		TransientVertexBuffer* m_transientVb;
-
-		Resolution m_resolution;
-		uint32_t m_debug;
-
-		CommandBuffer m_cmdPre;
-		CommandBuffer m_cmdPost;
-
 		template<typename Ty, uint32_t Max>
 		struct FreeHandle
 		{
@@ -386,6 +439,39 @@ namespace mygfx
 			Ty m_queue[Max];
 			uint16_t m_num;
 		};
+
+
+		ViewId m_viewRemap[MYGFX_CONFIG_MAX_VIEWS];
+		float m_colorPalette[MYGFX_CONFIG_MAX_COLOR_PALETTE][4];
+
+		View m_view[MYGFX_CONFIG_MAX_VIEWS];
+
+		int32_t m_occlusion[MYGFX_CONFIG_MAX_OCCLUSION_QUERIES];
+
+		uint64_t m_sortKeys[MYGFX_CONFIG_MAX_DRAW_CALLS + 1];
+		RenderItemCount m_sortValues[MYGFX_CONFIG_MAX_DRAW_CALLS + 1];
+		RenderItem m_renderItem[MYGFX_CONFIG_MAX_DRAW_CALLS + 1];
+		RenderBind m_renderItemBind[MYGFX_CONFIG_MAX_DRAW_CALLS + 1];
+
+		uint32_t m_blitKeys[MYGFX_CONFIG_MAX_BLIT_ITEMS + 1];
+		BlitItem m_blitItem[MYGFX_CONFIG_MAX_BLIT_ITEMS + 1];
+
+		FrameCache m_frameCache;
+		UniformBuffer** m_uniformBuffer;
+
+		uint32_t m_numRenderItems;
+		uint16_t m_numBlitItems;
+
+		uint32_t m_iboffset;
+		uint32_t m_vboffset;
+		TransientIndexBuffer* m_transientIb;
+		TransientVertexBuffer* m_transientVb;
+
+		Resolution m_resolution;
+		uint32_t m_debug;
+
+		CommandBuffer m_cmdPre;
+		CommandBuffer m_cmdPost;
 
 		FreeHandle<IndexBufferHandle, MYGFX_CONFIG_MAX_INDEX_BUFFERS>  m_freeIndexBuffer;
 		FreeHandle<VertexDeclHandle, MYGFX_CONFIG_MAX_VERTEX_DECLS>   m_freeVertexDecl;

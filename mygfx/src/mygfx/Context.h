@@ -1851,7 +1851,7 @@ namespace mygfx
 				return true;
 			}
 
-			BGFX_PROFILER_SCOPE("bgfx/API thread wait", 0xff2040ff);
+			MYGFX_PROFILER_SCOPE("bgfx/API thread wait", 0xff2040ff);
 			int64_t start = bx::getHPCounter();
 			bool ok = m_apiSem.wait(_msecs);
 			if (ok)
@@ -1876,7 +1876,7 @@ namespace mygfx
 		{
 			if (!m_singleThreaded)
 			{
-				BGFX_PROFILER_SCOPE("bgfx/Render thread wait", 0xff2040ff);
+				MYGFX_PROFILER_SCOPE("bgfx/Render thread wait", 0xff2040ff);
 				int64_t start = bx::getHPCounter();
 				bool ok = m_renderSem.wait();
 				BX_CHECK(ok, "Semaphore wait failed."); BX_UNUSED(ok);

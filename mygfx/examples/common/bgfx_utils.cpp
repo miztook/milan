@@ -5,10 +5,8 @@
 
 #include "common.h"
 
-#include <tinystl/allocator.h>
-#include <tinystl/vector.h>
-#include <tinystl/string.h>
-namespace stl = tinystl;
+
+namespace stl = std;
 
 #include <bgfx/bgfx.h>
 #include <bx/commandline.h>

@@ -1,10 +1,4 @@
-/*
- * Copyright 2011-2018 Branimir Karadzic. All rights reserved.
- * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
- */
-
-#ifndef BGFX_UTILS_H_HEADER_GUARD
-#define BGFX_UTILS_H_HEADER_GUARD
+#pragma once
 
 #include <bx/pixelformat.h>
 #include <bgfx/bgfx.h>
@@ -107,4 +101,3 @@ struct Args
 	uint16_t m_pciId;
 };
 
-#endif // BGFX_UTILS_H_HEADER_GUARD
