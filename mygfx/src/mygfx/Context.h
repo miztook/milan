@@ -1,7 +1,7 @@
 #ifndef CONTEXT_H_HEADER_GUARD
 #define CONTEXT_H_HEADER_GUARD
 
-#include "base.h"
+#include "Base.h"
 #include "NonLocalAllocator.h"
 #include "Frame.h"
 #include "Encoder.h"

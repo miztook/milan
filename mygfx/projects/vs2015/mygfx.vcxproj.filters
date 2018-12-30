@@ -754,9 +754,6 @@
     <ClInclude Include="..\..\src\mygfx\NonLocalAllocator.h">
       <Filter>src\mygfx</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\mygfx\base.h">
-      <Filter>src\mygfx</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\mygfx\Encoder.h">
       <Filter>src\mygfx</Filter>
     </ClInclude>
@@ -779,6 +776,9 @@
       <Filter>src\mygfx</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mygfx\Vertexdecl.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\Base.h">
       <Filter>src\mygfx</Filter>
     </ClInclude>
   </ItemGroup>

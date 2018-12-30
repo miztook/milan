@@ -358,7 +358,7 @@
     <ClInclude Include="..\..\include\mygfx\platform.h" />
     <ClInclude Include="..\..\src\bimg\bimg_p.h" />
     <ClInclude Include="..\..\src\bx\bx_p.h" />
-    <ClInclude Include="..\..\src\mygfx\base.h" />
+    <ClInclude Include="..\..\src\mygfx\Base.h" />
     <ClInclude Include="..\..\src\mygfx\CommandBuffer.h" />
     <ClInclude Include="..\..\src\mygfx\config.h" />
     <ClInclude Include="..\..\src\mygfx\Context.h" />

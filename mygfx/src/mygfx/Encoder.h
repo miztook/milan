@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base.h"
+#include "Base.h"
 #include "Frame.h"
 
 namespace mygfx
