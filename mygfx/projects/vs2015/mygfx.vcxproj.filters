@@ -365,9 +365,6 @@
     <ClCompile Include="..\..\src\mygfx\mygfx_p.h">
       <Filter>src\mygfx</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\mygfx\Globals.cpp">
-      <Filter>src\mygfx</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\mygfx\platform.cpp">
       <Filter>src\mygfx</Filter>
     </ClCompile>
@@ -375,6 +372,9 @@
       <Filter>src\mygfx</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\mygfx\Base.cpp">
+      <Filter>src\mygfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mygfx\Structs2.cpp">
       <Filter>src\mygfx</Filter>
     </ClCompile>
   </ItemGroup>
@@ -797,6 +797,9 @@
       <Filter>src\mygfx</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mygfx\Globals.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\Structs2.h">
       <Filter>src\mygfx</Filter>
     </ClInclude>
   </ItemGroup>

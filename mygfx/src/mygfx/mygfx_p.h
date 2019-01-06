@@ -29,10 +29,12 @@
 
 #include "mygfx/platform.h"
 #include "bimg/bimg.h"
-#include "base.h"
 #include "shader.h"
 #include "vertexdecl.h"
 
+#include "Structs.h"
+#include "Structs2.h"
+#include "Base.h"
 #include "CommandBuffer.h"
 #include "Uniform.h"
 #include "Context.h"

@@ -2,6 +2,7 @@
 
 #include "Base.h"
 #include "Structs.h"
+#include "Structs2.h"
 #include "CommandBuffer.h"
 #include "Uniform.h"
 

@@ -229,10 +229,10 @@
     <ClCompile Include="..\..\src\bx\url.cpp" />
     <ClCompile Include="..\..\src\mygfx\Base.cpp" />
     <ClCompile Include="..\..\src\mygfx\Context.cpp" />
-    <ClCompile Include="..\..\src\mygfx\Globals.cpp" />
     <ClCompile Include="..\..\src\mygfx\mygfx.cpp" />
     <ClCompile Include="..\..\src\mygfx\mygfx_p.h" />
     <ClCompile Include="..\..\src\mygfx\platform.cpp" />
+    <ClCompile Include="..\..\src\mygfx\Structs2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\3rdparty\astc\astc_codec_internals.h" />
@@ -373,6 +373,7 @@
     <ClInclude Include="..\..\src\mygfx\RendererContextI.h" />
     <ClInclude Include="..\..\src\mygfx\Shader.h" />
     <ClInclude Include="..\..\src\mygfx\Structs.h" />
+    <ClInclude Include="..\..\src\mygfx\Structs2.h" />
     <ClInclude Include="..\..\src\mygfx\Uniform.h" />
     <ClInclude Include="..\..\src\mygfx\Vertexdecl.h" />
   </ItemGroup>

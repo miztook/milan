@@ -5,6 +5,8 @@
 
 #include <inttypes.h>
 
+#include "Globals.h"
+
 #ifndef MYGFX_CONFIG_DEBUG
 #	define MYGFX_CONFIG_DEBUG 0
 #endif // MYGFX_CONFIG_DEBUG
@@ -203,10 +205,6 @@ namespace stl = std;
 
 namespace mygfx
 {
-	extern InternalData g_internalData;
-	extern PlatformData g_platformData;
-	extern bool g_platformDataChangedSinceReset;
-
 #if MYGFX_CONFIG_MAX_DRAW_CALLS < (64<<10)
 	typedef uint16_t RenderItemCount;
 #else
@@ -248,18 +246,11 @@ namespace mygfx
 
 	const char* getShaderTypeName(uint32_t _magic);
 
-	extern const uint32_t g_uniformTypeSize[UniformType::Count + 1];
-	extern CallbackI* g_callback;
-	extern bx::AllocatorI* g_allocator;
-	extern Caps g_caps;
-
 	typedef bx::StringT<&g_allocator> String;
 
 	void setGraphicsDebuggerPresent(bool _present);
 	bool isGraphicsDebuggerPresent();
 	void release(const Memory* _mem);
-	const char* getAttribName(Attrib::Enum _attr);
-	const char* getAttribNameShort(Attrib::Enum _attr);
 	void getTextureSizeFromRatio(BackbufferRatio::Enum _ratio, uint16_t& _width, uint16_t& _height);
 	TextureFormat::Enum getViableTextureFormat(const bimg::ImageContainer& _imageContainer);
 	const char* getName(TextureFormat::Enum _fmt);
@@ -314,10 +305,6 @@ namespace mygfx
 
 		return 1;
 	}
-
-	void dump(const VertexDecl& _decl);
-
-	
 
 	//
 #define SORT_KEY_NUM_BITS_VIEW         10

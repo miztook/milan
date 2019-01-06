@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Base.h"
 #include "Structs.h"
+#include "Structs2.h"
 
 namespace mygfx
 {

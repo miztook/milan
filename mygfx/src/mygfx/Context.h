@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Base.h"
-#include "NonLocalAllocator.h"
+#include "Structs.h"
+#include "Structs2.h"
 #include "Frame.h"
 #include "Encoder.h"
+#include "NonLocalAllocator.h"
 
 namespace mygfx
 {
@@ -16,8 +17,6 @@ namespace mygfx
 		~Context()
 		{
 		}
-
-		
 
 		// game thread
 		bool init(const Init& _init);
