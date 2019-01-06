@@ -365,6 +365,18 @@
     <ClCompile Include="..\..\src\mygfx\mygfx_p.h">
       <Filter>src\mygfx</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\mygfx\Globals.cpp">
+      <Filter>src\mygfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mygfx\platform.cpp">
+      <Filter>src\mygfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mygfx\Context.cpp">
+      <Filter>src\mygfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mygfx\Base.cpp">
+      <Filter>src\mygfx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\bx\allocator.h">
@@ -782,6 +794,9 @@
       <Filter>src\mygfx</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\mygfx\Structs.h">
+      <Filter>src\mygfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mygfx\Globals.h">
       <Filter>src\mygfx</Filter>
     </ClInclude>
   </ItemGroup>

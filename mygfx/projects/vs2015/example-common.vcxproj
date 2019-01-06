@@ -134,11 +134,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\examples\common\entry\entry.cpp" />
+    <ClCompile Include="..\..\examples\common\entry\entry_windows.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\examples\common\bgfx_utils.h" />
+    <ClInclude Include="..\..\examples\common\common.h" />
     <ClInclude Include="..\..\examples\common\entry\dbg.h" />
     <ClInclude Include="..\..\examples\common\entry\entry.h" />
+    <ClInclude Include="..\..\examples\common\entry\entry_p.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

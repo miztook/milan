@@ -17,6 +17,9 @@
     <ClCompile Include="..\..\examples\common\entry\entry.cpp">
       <Filter>common\entry</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\examples\common\entry\entry_windows.cpp">
+      <Filter>common\entry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\examples\common\entry\entry.h">
@@ -27,6 +30,12 @@
     </ClInclude>
     <ClInclude Include="..\..\examples\common\entry\dbg.h">
       <Filter>common\entry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\examples\common\entry\entry_p.h">
+      <Filter>common\entry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\examples\common\common.h">
+      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

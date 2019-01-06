@@ -333,7 +333,7 @@ namespace mygfx
 		virtual void fatal(
 			const char* _filePath
 			, uint16_t _line
-			, Fatal _code
+			, Fatal::Enum _code
 			, const char* _str
 		) = 0;
 
@@ -372,7 +372,7 @@ namespace mygfx
 	{
 		Init();
 
-		RendererType type;
+		RendererType::Enum type;
 		uint16_t vendorId;
 		uint16_t deviceId;
 
@@ -846,6 +846,11 @@ namespace mygfx
 		uint16_t m_attributes[Attrib::Count];
 	};
 
+}
+
+
+namespace mygfx
+{
 	void vertexPack(
 		const float _input[4]
 		, bool _inputNormalized
@@ -912,7 +917,7 @@ namespace mygfx
 	bool init(const Init& _init = {});
 
 	void shutdown();
-	
+
 	void reset(
 		uint32_t _width
 		, uint32_t _height

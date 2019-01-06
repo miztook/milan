@@ -91,7 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty;../../3rdparty/iqa/include;../../3rdparty/nvtt;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;_HAS_EXCEPTIONS=0;MYGFX_CONFIG_MULTITHREADED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;_HAS_EXCEPTIONS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -100,7 +100,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;_HAS_EXCEPTIONS=0;MYGFX_CONFIG_MULTITHREADED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__STDC_FORMAT_MACROS;_MBCS;_HAS_EXCEPTIONS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../include;../../include/compat/msvc;../../3rdparty;../../3rdparty/iqa/include;../../3rdparty/nvtt;</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -227,8 +227,12 @@
     <ClCompile Include="..\..\src\bx\thread.cpp" />
     <ClCompile Include="..\..\src\bx\timer.cpp" />
     <ClCompile Include="..\..\src\bx\url.cpp" />
+    <ClCompile Include="..\..\src\mygfx\Base.cpp" />
+    <ClCompile Include="..\..\src\mygfx\Context.cpp" />
+    <ClCompile Include="..\..\src\mygfx\Globals.cpp" />
     <ClCompile Include="..\..\src\mygfx\mygfx.cpp" />
     <ClCompile Include="..\..\src\mygfx\mygfx_p.h" />
+    <ClCompile Include="..\..\src\mygfx\platform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\3rdparty\astc\astc_codec_internals.h" />
@@ -364,6 +368,7 @@
     <ClInclude Include="..\..\src\mygfx\Context.h" />
     <ClInclude Include="..\..\src\mygfx\Encoder.h" />
     <ClInclude Include="..\..\src\mygfx\Frame.h" />
+    <ClInclude Include="..\..\src\mygfx\Globals.h" />
     <ClInclude Include="..\..\src\mygfx\NonLocalAllocator.h" />
     <ClInclude Include="..\..\src\mygfx\RendererContextI.h" />
     <ClInclude Include="..\..\src\mygfx\Shader.h" />

@@ -108,6 +108,27 @@ namespace mygfx
 			| MYGFX_CLEAR_COLOR_USE_PALETTE \
 			)
 
+#define MYGFX_API_THREAD_MAGIC UINT32_C(0x78666762)
+
+#if MYGFX_CONFIG_MULTITHREADED
+#	define MYGFX_CHECK_API_THREAD()                                  \
+		BX_CHECK(NULL != s_ctx, "Library is not initialized yet."); \
+		BX_CHECK(BGFX_API_THREAD_MAGIC == s_threadIndex, "Must be called from main thread.")
+#	define MYGFX_CHECK_RENDER_THREAD() BX_CHECK(~MYGFX_API_THREAD_MAGIC == s_threadIndex, "Must be called from render thread.")
+#else
+#	define MYGFX_CHECK_API_THREAD()
+#	define MYGFX_CHECK_RENDER_THREAD()
+#endif // BGFX_CONFIG_MULTITHREADED
+
+#define MYGFX_CHECK_CAPS(_caps, _msg)                                                   \
+	BX_CHECK(0 != (g_caps.supported & (_caps) )                                        \
+		, _msg " Use bgfx::getCaps to check " #_caps " backend renderer capabilities." \
+		);
+
+#ifndef MYGFX_CONFIG_MEMORY_TRACKING
+#	define MYGFX_CONFIG_MEMORY_TRACKING (MYGFX_CONFIG_DEBUG && BX_CONFIG_SUPPORTS_THREADING)
+#endif // BGFX_CONFIG_MEMORY_TRACKING
+
 //stl
 #	include <list>
 #	include <string>
@@ -358,8 +379,12 @@ namespace mygfx
 
 
 	BX_STATIC_ASSERT(MYGFX_CONFIG_MAX_VIEWS <= (1 << SORT_KEY_NUM_BITS_VIEW));
-	BX_STATIC_ASSERT((MYGFX_CONFIG_MAX_PROGRAMS & (MYGFX_CONFIG_MAX_PROGRAMS - 1)) == 0); // Must be power of 2.
-	BX_STATIC_ASSERT((0 // Render key mask shouldn't overlap.
+
+	// Must be power of 2.
+	BX_STATIC_ASSERT((MYGFX_CONFIG_MAX_PROGRAMS & (MYGFX_CONFIG_MAX_PROGRAMS - 1)) == 0); 
+
+	// Render key mask shouldn't overlap.
+	BX_STATIC_ASSERT((0 
 		| SORT_KEY_VIEW_MASK
 		| SORT_KEY_DRAW_BIT
 		| SORT_KEY_DRAW_TYPE_MASK
@@ -374,7 +399,9 @@ namespace mygfx
 			^ SORT_KEY_DRAW_0_PROGRAM_MASK
 			^ SORT_KEY_DRAW_0_DEPTH_MASK
 			));
-	BX_STATIC_ASSERT((0 // Render key mask shouldn't overlap.
+
+	// Render key mask shouldn't overlap.
+	BX_STATIC_ASSERT((0 
 		| SORT_KEY_VIEW_MASK
 		| SORT_KEY_DRAW_BIT
 		| SORT_KEY_DRAW_TYPE_MASK
@@ -389,7 +416,9 @@ namespace mygfx
 			^ SORT_KEY_DRAW_1_TRANS_MASK
 			^ SORT_KEY_DRAW_1_PROGRAM_MASK
 			));
-	BX_STATIC_ASSERT((0 // Render key mask shouldn't overlap.
+
+	// Render key mask shouldn't overlap.
+	BX_STATIC_ASSERT((0 
 		| SORT_KEY_VIEW_MASK
 		| SORT_KEY_DRAW_BIT
 		| SORT_KEY_DRAW_TYPE_MASK
@@ -404,7 +433,9 @@ namespace mygfx
 			^ SORT_KEY_DRAW_2_TRANS_MASK
 			^ SORT_KEY_DRAW_2_PROGRAM_MASK
 			));
-	BX_STATIC_ASSERT((0 // Compute key mask shouldn't overlap.
+
+	// Compute key mask shouldn't overlap.
+	BX_STATIC_ASSERT((0 
 		| SORT_KEY_VIEW_MASK
 		| SORT_KEY_DRAW_BIT
 		| SORT_KEY_COMPUTE_SEQ_SHIFT
@@ -415,10 +446,4 @@ namespace mygfx
 			^ SORT_KEY_COMPUTE_SEQ_SHIFT
 			^ SORT_KEY_COMPUTE_PROGRAM_MASK
 			));
-
-	
-
-
-
-
 }
